@@ -1,6 +1,7 @@
 import csv
 import re
 from pathlib import Path
+from typing import Optional
 
 from collectAllPages import collect_all_episode_pages
 from collectScript import collect_transcript
@@ -10,7 +11,7 @@ BRACKET_TEXT = re.compile(r"\[[^\]]*\]")
 MULTI_SPACE = re.compile(r"\s+")
 
 
-def parse_dialogue_line(line: str) -> tuple[str, str] | None:
+def parse_dialogue_line(line: str) -> Optional[tuple[str, str]]:
     cleaned = BRACKET_TEXT.sub("", line)
     cleaned = MULTI_SPACE.sub(" ", cleaned).strip()
     if ":" not in cleaned:
