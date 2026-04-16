@@ -1,0 +1,4 @@
+/data
+/data/transcript-*.csv
+
+__pycache__/
