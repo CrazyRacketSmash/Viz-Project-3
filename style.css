@@ -1,0 +1,52 @@
+.controls {
+  margin-bottom: 20px;
+}
+
+.controls label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.controls select {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#tooltip {
+  position: absolute;
+  pointer-events: none;
+  display: none;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+}
+
+svg {
+  display: block;
+  margin-top: 20px;
+}
+
+#about {
+  max-width: 800px;
+  /* margin: 20px auto; */
+  line-height: 1.6;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#about p {
+  margin-bottom: 10px;
+}
