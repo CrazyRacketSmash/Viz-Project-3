@@ -7,9 +7,35 @@
 </head>
 <body>
 
-  <h1>LOST Character Importance</h1>
+  <h1>Lost Character Analysis</h1>
+
+  <div id="about">
+    <p>
+      <strong>Lost</strong> aired on the American Broadcasting Company (ABC) from 2004 to 2010, running for 6 seasons and 121 episodes. The series follows survivors of a plane crash stranded on a mysterious island filled with strange and supernatural elements.
+    </p>
+    <p>
+      It features a diverse cast of characters, including Jack Shephard, Kate Austen, James "Sawyer" Ford, and John Locke, whose backstories are revealed throughout the show.
+    </p>
+    <p>
+      Blending mystery, drama, science fiction, and adventure, <strong>Lost</strong> became a cultural phenomenon known for its complex storytelling and unexpected twists.
+    </p>
+  </div>
+
+  <div class="controls">
+    <label for="seasonSelect">Season:</label>
+    <select id="seasonSelect">
+      <option value="all">All Seasons</option>
+      <option value="1">Season 1</option>
+      <option value="2">Season 2</option>
+      <option value="3">Season 3</option>
+      <option value="4">Season 4</option>
+      <option value="5">Season 5</option>
+      <option value="6">Season 6</option>
+    </select>
+  </div>
 
   <svg id="chart" width="800" height="500"></svg>
+  <div id="tooltip" class="tooltip"></div>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="script.js"></script>
