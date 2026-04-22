@@ -38,6 +38,32 @@ svg {
   margin-top: 20px;
 }
 
+#timeline {
+  margin-top: 28px;
+  cursor: grab;
+}
+
+#timeline:active {
+  cursor: grabbing;
+}
+
+.timeline-controls {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.timeline-axis text {
+  font-size: 11px;
+}
+
+.timeline-hover-band {
+  fill: rgba(70, 130, 180, 0);
+}
+
+.timeline-hover-band:hover {
+  fill: rgba(70, 130, 180, 0.12);
+}
+
 #about {
   max-width: 800px;
   /* margin: 20px auto; */
