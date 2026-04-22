@@ -1,20 +1,158 @@
 const selectedSeason = "all";
 let globalData;
+let globalActData;
+const TIMELINE_TOP_N = 15;
 
-d3.csv("data/master_all_seasons.csv").then(data => {
-    data.forEach(d => {
-        d.season = +d.season;
-        d.episode = +d.episode;
+Promise
+    .all([
+        d3.csv("data/master_all_seasons.csv"),
+        d3.csv("data/act_character_dataset.csv")
+    ])
+    .then(([lineData, actData]) => {
+        lineData.forEach(d => {
+            d.season = +d.season;
+            d.episode = +d.episode;
+        });
+
+        actData.forEach(d => {
+            d.season = +d.season;
+            d.episode = +d.episode;
+            d.act_number = +d.act_number;
+            d.characters = parseCharactersInAct(d.characters_in_act);
+        });
+
+        globalData = lineData;
+        globalActData = actData;
+
+        initializeTimelineFilters();
+        updateChart("all");
+
+        d3.select("#seasonSelect").on("change", function () {
+            const selectedSeason = this.value;
+            updateChart(selectedSeason);
+        });
     });
 
-    globalData = data;
-    updateChart("all");
+function initializeTimelineFilters() {
+    const timelineSeasonSelect = d3.select("#timelineSeasonSelect");
+    const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
 
-    d3.select("#seasonSelect").on("change", function () {
-        const selectedSeason = this.value;
-        updateChart(selectedSeason);
+    const seasons = Array.from(new Set(globalActData.map(d => d.season))).sort((a, b) => a - b);
+
+    timelineSeasonSelect.selectAll("option").remove();
+    timelineSeasonSelect
+        .append("option")
+        .attr("value", "all")
+        .text("All Seasons");
+
+    timelineSeasonSelect
+        .selectAll("option.timeline-season-option")
+        .data(seasons)
+        .enter()
+        .append("option")
+        .attr("class", "timeline-season-option")
+        .attr("value", d => d)
+        .text(d => `Season ${d}`);
+
+    updateTimelineEpisodeOptions("all");
+
+    timelineSeasonSelect.on("change", function () {
+        const selectedTimelineSeason = this.value;
+        updateTimelineEpisodeOptions(selectedTimelineSeason);
+        renderTimelineFromFilters();
     });
-});
+
+    timelineEpisodeSelect.on("change", function () {
+        renderTimelineFromFilters();
+    });
+}
+
+function updateTimelineEpisodeOptions(selectedTimelineSeason) {
+    const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
+
+    const sourceData = selectedTimelineSeason === "all"
+        ? globalActData
+        : globalActData.filter(d => d.season === +selectedTimelineSeason);
+
+    const episodes = Array.from(new Set(sourceData.map(d => d.episode))).sort((a, b) => a - b);
+
+    timelineEpisodeSelect.selectAll("option").remove();
+    timelineEpisodeSelect
+        .append("option")
+        .attr("value", "all")
+        .text("All Episodes");
+
+    timelineEpisodeSelect
+        .selectAll("option.timeline-episode-option")
+        .data(episodes)
+        .enter()
+        .append("option")
+        .attr("class", "timeline-episode-option")
+        .attr("value", d => d)
+        .text(d => `Episode ${String(d).padStart(2, "0")}`);
+
+    timelineEpisodeSelect.property("value", "all");
+}
+
+function renderTimelineFromFilters() {
+    if (!globalActData || !globalData) {
+        return;
+    }
+
+    const timelineSeason = d3.select("#timelineSeasonSelect").property("value") || "all";
+    const timelineEpisode = d3.select("#timelineEpisodeSelect").property("value") || "all";
+
+    let filteredActData = globalActData;
+
+    if (timelineSeason !== "all") {
+        filteredActData = filteredActData.filter(d => d.season === +timelineSeason);
+    }
+
+    if (timelineEpisode !== "all") {
+        filteredActData = filteredActData.filter(d => d.episode === +timelineEpisode);
+    }
+
+    let filteredLineData = globalData;
+
+    if (timelineSeason !== "all") {
+        filteredLineData = filteredLineData.filter(d => d.season === +timelineSeason);
+    }
+
+    if (timelineEpisode !== "all") {
+        filteredLineData = filteredLineData.filter(d => d.episode === +timelineEpisode);
+    }
+
+    const timelineCharacterCounts = d3.rollups(
+        filteredLineData,
+        v => v.length,
+        d => d.character
+    );
+
+    const timelineTopCharacters = timelineCharacterCounts
+        .map(([character, count]) => ({ character, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, TIMELINE_TOP_N);
+
+    drawActTimeline(filteredActData, timelineTopCharacters, timelineSeason);
+}
+
+function parseCharactersInAct(rawList) {
+    if (!rawList) {
+        return [];
+    }
+
+    const normalized = rawList
+        .replace(/""/g, '"')
+        .replace(/&#160;/g, " ");
+
+    try {
+        return JSON.parse(normalized)
+            .map(name => String(name).trim().toUpperCase())
+            .filter(Boolean);
+    } catch (error) {
+        return [];
+    }
+}
 
 function drawBarChart(data, filteredData) {
     const svg = d3.select("#chart");
@@ -134,4 +272,258 @@ function updateChart(selectedSeason) {
         .slice(0, 15);
 
     drawBarChart(processed, filteredData);
+    renderTimelineFromFilters();
+}
+
+function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
+    const svg = d3.select("#timeline");
+    const tooltip = d3.select("#tooltip");
+    const width = 1000;
+    const height = 520;
+    const margin = { top: 25, right: 20, bottom: 110, left: 120 };
+
+    svg.selectAll("*").remove();
+
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+    const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const orderedTopCharacters = topCharacterData.map(d => d.character.toUpperCase());
+    const topCharacters = new Set(orderedTopCharacters);
+    const filteredActs = filteredActData
+        .filter(d => d.characters.some(char => topCharacters.has(char)))
+        .sort((a, b) => (a.season - b.season) || (a.episode - b.episode) || (a.act_number - b.act_number));
+
+    const actPoints = filteredActs.map((act, index) => ({
+        ...act,
+        actKey: `${act.season}-${act.episode}-${act.act_number}`,
+        index,
+        uniqueCharacters: Array.from(new Set(act.characters)).sort()
+    }));
+
+    const actKeys = actPoints.map(d => d.actKey);
+
+    if (actKeys.length === 0) {
+        g.append("text")
+            .attr("x", chartWidth / 2)
+            .attr("y", chartHeight / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("No act-character data available for this selection.");
+        return;
+    }
+
+    const timelineStartIndex = -0.2;
+    const x = d3.scaleLinear()
+        .domain([timelineStartIndex, Math.max(0, actKeys.length - 1)])
+        .range([0, chartWidth]);
+
+    const activeCharacters = new Set(
+        filteredActs.flatMap(d => d.characters.filter(char => topCharacters.has(char)))
+    );
+
+    const yDomain = orderedTopCharacters.filter(char => activeCharacters.has(char));
+    if (!yDomain.length) {
+        g.append("text")
+            .attr("x", chartWidth / 2)
+            .attr("y", chartHeight / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "14px")
+            .text("No timeline characters match this season or episode selection.");
+        return;
+    }
+
+    const yBase = d3.scalePoint()
+        .domain(yDomain)
+        .range([0, chartHeight]);
+
+    // Characters in the same act share a y-position so lines merge.
+    const mergedYByActChar = new Map();
+    filteredActs.forEach(act => {
+        const key = `${act.season}-${act.episode}-${act.act_number}`;
+        const participants = act.characters.filter(char => topCharacters.has(char));
+        if (!participants.length) {
+            return;
+        }
+
+        const mergeY = d3.mean(participants, char => yBase(char));
+        const sortedParticipants = participants
+            .slice()
+            .sort((a, b) => yBase(a) - yBase(b));
+
+        const microOffset = 2;
+        sortedParticipants.forEach((char, idx) => {
+            const centeredOffset = (idx - (sortedParticipants.length - 1) / 2) * microOffset;
+            mergedYByActChar.set(`${char}|${key}`, mergeY + centeredOffset);
+        });
+    });
+
+    const line = d3.line()
+        .x(d => x(d.index))
+        .y(d => d.y)
+        .curve(d3.curveMonotoneX);
+
+    const color = d3.scaleOrdinal(d3.schemeTableau10)
+        .domain(yDomain);
+
+    yDomain.forEach(character => {
+        const points = [{ actKey: "start", index: timelineStartIndex, y: yBase(character) }];
+
+        filteredActs.forEach((act, index) => {
+            const actKey = `${act.season}-${act.episode}-${act.act_number}`;
+            const mergedY = mergedYByActChar.get(`${character}|${actKey}`);
+            // If the character is absent in this act, return to their base lane.
+            const yValue = mergedY !== undefined ? mergedY : yBase(character);
+
+            // Keep the start anchored at the character lane, then transition into act 1.
+            if (index === 0) {
+                points.push({ actKey, index: 0.001, y: yValue });
+            } else {
+                points.push({ actKey, index, y: yValue });
+            }
+        });
+
+        if (points.length < 2) {
+            return;
+        }
+
+        g.append("path")
+            .datum(points)
+            .attr("class", "timeline-path")
+            .attr("fill", "none")
+            .attr("stroke", color(character))
+            .attr("stroke-width", 2)
+            .attr("opacity", 0.9)
+            .attr("d", line);
+    });
+
+    const xAxisGroup = g.append("g")
+        .attr("class", "timeline-axis")
+        .attr("transform", `translate(0,${chartHeight})`);
+
+    const hoverBandGroup = g.append("g").attr("class", "timeline-hover-bands");
+
+    const formatActLabel = actKey => {
+        const [season, episode, act] = actKey.split("-").map(Number);
+        if (selectedSeason === "all") {
+            return `S${season}E${String(episode).padStart(2, "0")}-A${act}`;
+        }
+        return `E${String(episode).padStart(2, "0")}-A${act}`;
+    };
+
+    const renderXAxis = scale => {
+        const [domainMin, domainMax] = scale.domain();
+        const visibleCount = Math.max(1, domainMax - domainMin + 1);
+        const step = Math.max(1, Math.ceil(visibleCount / 24));
+        const start = Math.max(0, Math.floor(domainMin));
+        const end = Math.min(actKeys.length - 1, Math.ceil(domainMax));
+        const tickIndices = [];
+
+        for (let i = start; i <= end; i += step) {
+            tickIndices.push(i);
+        }
+
+        xAxisGroup
+            .call(
+                d3.axisBottom(scale)
+                    .tickValues(tickIndices)
+                    .tickFormat(index => formatActLabel(actKeys[index]))
+            )
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-0.5em")
+            .attr("dy", "0.3em")
+            .attr("transform", "rotate(-45)");
+    };
+
+    const renderHoverBands = scale => {
+        const bands = hoverBandGroup
+            .selectAll("rect")
+            .data(actPoints, d => d.actKey);
+
+        bands.enter()
+            .append("rect")
+            .attr("class", "timeline-hover-band")
+            .attr("y", 0)
+            .attr("height", chartHeight)
+            .on("mouseover", (event, d) => {
+                const title = selectedSeason === "all"
+                    ? `S${d.season}E${String(d.episode).padStart(2, "0")} - A${d.act_number}`
+                    : `E${String(d.episode).padStart(2, "0")} - A${d.act_number}`;
+                tooltip
+                    .style("display", "block")
+                    .html(`<strong>${title}</strong><br>${d.uniqueCharacters.join(", ")}`);
+            })
+            .on("mousemove", event => {
+                tooltip
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY + 10}px`);
+            })
+            .on("mouseout", () => {
+                tooltip.style("display", "none");
+            })
+            .merge(bands)
+            .attr("x", d => scale(d.index) - 6)
+            .attr("width", 12);
+
+        bands.exit().remove();
+    };
+
+    renderXAxis(x);
+    renderHoverBands(x);
+
+    g.append("g")
+        .attr("class", "timeline-axis")
+        .call(d3.axisLeft(yBase));
+
+    const clipId = "timeline-clip";
+    g.append("defs")
+        .append("clipPath")
+        .attr("id", clipId)
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", chartWidth)
+        .attr("height", chartHeight);
+
+    g.selectAll(".timeline-path")
+        .attr("clip-path", `url(#${clipId})`);
+
+    const zoom = d3.zoom()
+        .scaleExtent([1, 12])
+        .translateExtent([[0, 0], [chartWidth, chartHeight]])
+        .extent([[0, 0], [chartWidth, chartHeight]])
+        .on("zoom", event => {
+            const zoomedX = event.transform.rescaleX(x);
+            g.selectAll(".timeline-path")
+                .attr("d", d => line.x(point => zoomedX(point.index))(d));
+            renderXAxis(zoomedX);
+            renderHoverBands(zoomedX);
+        });
+
+    svg.call(zoom);
+
+    g.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + 95)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text("Episodes and Acts");
+
+    g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -chartHeight / 2)
+        .attr("y", -88)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text("Characters");
+
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", 18)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "600")
+        .text("Character Co-Appearance Timeline by Episode and Act");
 }
