@@ -790,14 +790,52 @@ function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
         }
 
         g.append("path")
-            .datum(points)
+            .datum({ character, points })
             .attr("class", "timeline-path")
             .attr("fill", "none")
             .attr("stroke", color(character))
             .attr("stroke-width", 2)
             .attr("opacity", 0.9)
-            .attr("d", line);
+            .attr("d", d => line(d.points));
     });
+
+    let hoveredCharacter = null;
+    const lockedCharacters = new Set();
+    let yAxisLabels = null;
+
+    const timelinePaths = g.selectAll(".timeline-path")
+        .style("cursor", "pointer")
+        .on("mouseover", (event, d) => {
+            hoveredCharacter = d.character;
+            applyCharacterFocus();
+        })
+        .on("mouseout", () => {
+            hoveredCharacter = null;
+            applyCharacterFocus();
+        });
+
+    const getFocusedCharacters = () => {
+        const focused = new Set(lockedCharacters);
+        if (hoveredCharacter) {
+            focused.add(hoveredCharacter);
+        }
+        return focused;
+    };
+
+    function applyCharacterFocus() {
+        const focusedCharacters = getFocusedCharacters();
+        const hasFocus = focusedCharacters.size > 0;
+
+        timelinePaths
+            .attr("opacity", d => (!hasFocus || focusedCharacters.has(d.character)) ? 0.95 : 0.14)
+            .attr("stroke-width", d => (!hasFocus || focusedCharacters.has(d.character)) ? 3.2 : 1.5);
+
+        if (yAxisLabels) {
+            yAxisLabels
+                .style("opacity", char => (!hasFocus || focusedCharacters.has(char)) ? 1 : 0.45)
+                .style("font-weight", char => lockedCharacters.has(char) ? "700" : "400");
+        }
+    }
 
     const xAxisGroup = g.append("g")
         .attr("class", "timeline-axis")
@@ -873,10 +911,26 @@ function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
 
     renderXAxis(x);
     renderHoverBands(x);
+    hoverBandGroup.lower();
 
-    g.append("g")
+    const yAxisGroup = g.append("g")
         .attr("class", "timeline-axis")
         .call(d3.axisLeft(yBase));
+
+    yAxisLabels = yAxisGroup
+        .selectAll(".tick text")
+        .style("cursor", "pointer")
+        .on("click", (event, character) => {
+            if (lockedCharacters.has(character)) {
+                lockedCharacters.delete(character);
+            } else {
+                lockedCharacters.add(character);
+            }
+            hoveredCharacter = null;
+            applyCharacterFocus();
+        });
+
+    applyCharacterFocus();
 
     const clipId = "timeline-clip";
     g.append("defs")
@@ -897,10 +951,12 @@ function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
         .extent([[0, 0], [chartWidth, chartHeight]])
         .on("zoom", event => {
             const zoomedX = event.transform.rescaleX(x);
+            const zoomedLine = line.x(point => zoomedX(point.index));
             g.selectAll(".timeline-path")
-                .attr("d", d => line.x(point => zoomedX(point.index))(d));
+                .attr("d", d => zoomedLine(d.points));
             renderXAxis(zoomedX);
             renderHoverBands(zoomedX);
+            hoverBandGroup.lower();
         });
 
     svg.call(zoom);
