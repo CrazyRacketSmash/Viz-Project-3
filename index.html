@@ -46,16 +46,22 @@
 
   <svg id="timeline" width="1000" height="520"></svg>
   <div id="tooltip" class="tooltip"></div>
-    
-  <div class="searchBox">
-      <input type="text" id="wordSearch" placeholder="Search word..." />
-      <button id="search">Search</button>
-  </div>
 
-  <!-- Line chart for word frequency -->
-  <svg id="lineChart"></svg>
-  <!-- Top speakers for the searched word -->
-  <svg id="barChart"></svg>
+  <section id="level4Panel" class="level4-panel">
+    <h2>Word Searching</h2>
+    <div class="searchBox">
+      <input type="text" id="wordSearch" placeholder="Search word or phrase..." />
+    </div>
+
+    <div class="level4-charts">
+      <div class="chart-card">
+        <svg id="lineChart"></svg>
+      </div>
+      <div class="chart-card">
+        <svg id="barChart"></svg>
+      </div>
+    </div>
+  </section>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="script.js"></script>

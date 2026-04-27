@@ -77,23 +77,63 @@ svg {
   margin-bottom: 10px;
 }
 
-.searchBox {
-  margin-top: 20px;
-  font-size: 15px;
-  gap: 8px;
+.level4-panel {
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  background: #fafafa;
 }
 
-#search {
-  padding: 8px 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
+.level4-panel h2 {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.searchBox {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
 #wordSearch {
+  width: min(520px, 90%);
   padding: 8px 12px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.level4-charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.chart-card {
+  height: 440px;
+  padding: 0;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  background: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#lineChart,
+#barChart {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 1000px) {
+  .level4-charts {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card {
+    height: 420px;
+  }
 }
