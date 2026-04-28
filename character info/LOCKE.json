@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "John Locke",
+    "subtitle": "Hunter and believer",
+    "bio": "Locke is defined by faith in the island, personal transformation, and a deep belief that his life has purpose.",
+    "facts": {
+      "Role": "Seeker",
+      "Focus": "Faith and destiny",
+      "Known for": "Survival skills and unwavering conviction"
+    },
+    "tags": ["Faith", "Destiny", "Survival", "Mystery"]
+  }
+}

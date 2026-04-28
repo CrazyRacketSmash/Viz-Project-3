@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Charlotte Lewis",
+    "subtitle": "Paleontologist and researcher",
+    "bio": "Charlotte is a scientist sent to the island, caught between her mission and her growing connection to the survivors.",
+    "facts": {
+      "Role": "Scientist",
+      "Focus": "Truth and discovery",
+      "Known for": "Paleontology and principled choices"
+    },
+    "tags": ["Science", "Discovery", "Ethics", "Mystery"]
+  }
+}

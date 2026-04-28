@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Richard Alpert",
+    "subtitle": "Ageless advisor and emissary",
+    "bio": "Richard serves as a bridge between factions and carries a deep connection to the island's history.",
+    "facts": {
+      "Role": "Advisor",
+      "Focus": "History and loyalty",
+      "Known for": "Calm guidance and timeless presence"
+    },
+    "tags": ["History", "Guidance", "Mystery", "Loyalty"]
+  }
+}

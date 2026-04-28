@@ -2,6 +2,7 @@ let globalData;
 let globalActData;
 let currentSearchTerm = "";
 let wordSearchDebounceTimer = null;
+let characterProfileRenderToken = 0;
 
 const selectedSeason = "all";
 const WORD_CHART_WIDTH = 560;
@@ -9,8 +10,8 @@ const WORD_CHART_DEFAULT_HEIGHT = 440;
 const WORD_TOP_SPEAKERS = 12;
 const WORD_CHART_MIN_WIDTH = 320;
 const WORD_CHART_MIN_HEIGHT = 280;
-const TIMELINE_TOP_N = 15;
-const MAIN_CHARACTER_COUNT = 18;
+const TIMELINE_TOP_N = 45;
+const MAIN_CHARACTER_COUNT = 45;
 const TOP_WORDS_N = 18;
 const WORD_CLOUD_N = 55;
 const TOP_PHRASES_N = 14;
@@ -147,6 +148,229 @@ function updateTextExplorer() {
     drawWordCloud(cloudWords);
     drawWordFrequencyBars(topWords);
     drawPhraseBars(topPhrases);
+
+    // Render character profile in the profile placeholder
+    renderCharacterProfile(selectedCharacter, characterData, topWords.slice(0, 6));
+}
+
+function titleCase(str) {
+    return String(str || "")
+        .toLowerCase()
+        .split(/\s+/)
+        .map(s => s.charAt(0).toUpperCase() + s.slice(1))
+        .join(' ');
+}
+
+// Attempt to find a profile image in img/character/ by probing likely filenames.
+function findProfileImageUrl(character) {
+    return new Promise((resolve) => {
+        if (!character) {
+            resolve(null);
+            return;
+        }
+
+        // Build candidate base names (underscored)
+        const raw = character.replace(/\s+/g, '_');
+        const candidates = [];
+        const baseVariants = [
+            raw, // likely UPPER_CASE from data
+            raw.toLowerCase(),
+            raw.toLowerCase().split('_').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('_'),
+            raw.split('_').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('_')
+        ];
+
+        const exts = ['jpg', 'jpeg', 'png', 'webp'];
+        const suffixes = ['', '_1', '_2', '_3'];
+
+        baseVariants.forEach(b => {
+            suffixes.forEach(suf => {
+                exts.forEach(ext => {
+                    candidates.push(`img/character/${b}${suf}.${ext}`);
+                });
+            });
+        });
+
+        // Probe sequentially until one loads
+        let idx = 0;
+        const tryNext = () => {
+            if (idx >= candidates.length) {
+                resolve(null);
+                return;
+            }
+            const url = candidates[idx++];
+            const img = new Image();
+            img.onload = () => resolve(url);
+            img.onerror = () => setTimeout(tryNext, 0);
+            img.src = url;
+        };
+
+        tryNext();
+    });
+}
+
+async function renderCharacterProfile(character, characterData, topWords) {
+    const container = d3.select('.character-profile-placeholder');
+
+    const renderToken = ++characterProfileRenderToken;
+    const displayName = titleCase(character.replace(/_/g, ' '));
+
+    container.html('');
+    container.append('div').attr('class', 'placeholder-content').text('Loading profile...');
+
+    const profile = await loadCharacterProfile(character, displayName);
+    const profileSection = getCharacterInfoSection(profile);
+
+    if (renderToken !== characterProfileRenderToken) {
+        return;
+    }
+
+    container.html('');
+
+    const hasProfile = profile !== null && profile !== undefined;
+    const profileName = profileSection?.name || profile?.name || displayName;
+    const profileBio = profileSection?.bio || profileSection?.summary || profile?.bio || profile?.summary || (hasProfile ? "Profile details available in the character info folder." : "Profile coming soon.");
+    const profileImage = profileSection?.image || profile?.image || await findProfileImageUrl(character);
+    const profileSubtitle = profileSection?.subtitle || profileSection?.role || profileSection?.title || profile?.subtitle || profile?.role || profile?.title || (hasProfile ? "" : "Work in Progress");
+    const profileFacts = buildProfileFacts(profileSection || profile);
+    const profileTags = Array.isArray(profileSection?.tags) && profileSection.tags.length ? profileSection.tags : (Array.isArray(profile?.tags) && profile.tags.length ? profile.tags : topWords.map(d => d.word));
+
+    const imgWrapper = container.append('div').attr('class', 'profile-img-wrapper');
+    if (profileImage) {
+        imgWrapper.append('img').attr('src', profileImage).attr('alt', profileName);
+    } else if (hasProfile) {
+        imgWrapper.append('div').attr('class', 'placeholder-content').text('No image available');
+    } else {
+        const wip = imgWrapper.append('div').attr('class', 'placeholder-content wip-placeholder');
+        wip.append('div').text('📝');
+        wip.append('div').style('font-size', '0.8rem').style('margin-top', '0.25rem').text('Work in Progress');
+    }
+
+    container.append('div').attr('class', 'character-name').text(profileName);
+
+    container.append('p').attr('class', 'profile-bio').text(profileBio);
+
+    const uniqueWordsSet = new Set();
+    characterData.forEach(d => {
+        tokenizeSentence(d.sentence).forEach(tok => uniqueWordsSet.add(tok));
+    });
+    const metaParts = [];
+    if (profileSubtitle) {
+        metaParts.push(profileSubtitle);
+    }
+    metaParts.push(`Lines: ${characterData.length.toLocaleString()}`);
+    metaParts.push(`Unique Words: ${uniqueWordsSet.size || 0}`);
+
+    container.append('div')
+        .attr('class', 'profile-meta profile-meta--compact')
+        .text(metaParts.join(' • '));
+
+    if (profileFacts) {
+        container.append('div').attr('class', 'profile-meta').text('Character Info');
+        const facts = container.append('dl').attr('class', 'profile-facts');
+        Object.entries(profileFacts).forEach(([label, value]) => {
+            facts.append('dt').text(label);
+            facts.append('dd').text(String(value));
+        });
+    }
+
+    if (profileTags && profileTags.length) {
+        const words = container.append('div').attr('class', 'top-words');
+        profileTags.slice(0, 4).forEach(tag => {
+            words.append('span').text(tag);
+        });
+    }
+}
+
+function buildProfileFacts(profile) {
+    if (!profile || typeof profile !== 'object') {
+        return null;
+    }
+
+    const knownKeys = new Set([
+        'name', 'subtitle', 'bio', 'summary', 'image', 'tags', 'facts', 'role', 'title'
+    ]);
+
+    const facts = {};
+
+    if (profile.facts && typeof profile.facts === 'object' && !Array.isArray(profile.facts)) {
+        Object.entries(profile.facts).forEach(([label, value]) => {
+            if (value !== undefined && value !== null && String(value).trim() !== '') {
+                facts[label] = value;
+            }
+        });
+    }
+
+    Object.entries(profile).forEach(([key, value]) => {
+        if (knownKeys.has(key)) {
+            return;
+        }
+
+        if (value === undefined || value === null || value === '') {
+            return;
+        }
+
+        if (Array.isArray(value)) {
+            facts[toLabel(key)] = value.join(', ');
+            return;
+        }
+
+        if (typeof value === 'object') {
+            facts[toLabel(key)] = JSON.stringify(value);
+            return;
+        }
+
+        facts[toLabel(key)] = value;
+    });
+
+    return Object.keys(facts).length ? facts : null;
+}
+
+function getCharacterInfoSection(profile) {
+    if (!profile || typeof profile !== 'object') {
+        return null;
+    }
+
+    const section = profile['character info'] || profile.character_info || profile.characterInfo || profile.info;
+    if (section && typeof section === 'object' && !Array.isArray(section)) {
+        return section;
+    }
+
+    return profile;
+}
+
+function toLabel(key) {
+    return String(key || '')
+        .replace(/[_-]+/g, ' ')
+        .replace(/\b\w/g, char => char.toUpperCase());
+}
+
+async function loadCharacterProfile(character, displayName) {
+    const profileNames = [
+        character,
+        displayName,
+        character.replace(/_/g, ' '),
+        displayName.toUpperCase(),
+        displayName.toLowerCase(),
+        displayName.replace(/\s+/g, '_')
+    ];
+
+    const uniquePaths = Array.from(new Set(profileNames.map(name => `character info/${name}.json`)));
+
+    for (const profilePath of uniquePaths) {
+        try {
+            const response = await fetch(encodeURI(profilePath), { cache: 'no-store' });
+            if (!response.ok) {
+                continue;
+            }
+
+            const profile = await response.json();
+            return profile;
+        } catch (error) {
+            continue;
+        }
+    }
+
+    return null;
 }
 
 function updateTextSummary(selectedCharacter, selectedSeason, characterData, allTokens, uniqueWordCount) {
@@ -207,7 +431,7 @@ function drawWordFrequencyBars(topWords) {
     const svg = d3.select("#wordBars");
     const width = +svg.attr("width");
     const height = +svg.attr("height");
-    const margin = { top: 15, right: 20, bottom: 60, left: 120 };
+    const margin = { top: 15, right: 160, bottom: 10, left: 90 };
 
     svg.selectAll("*").remove();
 
@@ -272,7 +496,7 @@ function drawPhraseBars(topPhrases) {
     const svg = d3.select("#phraseBars");
     const width = +svg.attr("width");
     const height = +svg.attr("height");
-    const margin = { top: 15, right: 20, bottom: 60, left: 200 };
+    const margin = { top: 15, right: 150, bottom: 10, left: 100 };
 
     svg.selectAll("*").remove();
 
@@ -337,6 +561,9 @@ function drawWordCloud(words) {
     const svg = d3.select("#wordCloud");
     const width = +svg.attr("width");
     const height = +svg.attr("height");
+    const margin = { top: 8, right: 140, bottom: 8, left: 28 };
+    const innerWidth = Math.max(1, width - margin.left - margin.right);
+    const innerHeight = Math.max(1, height - margin.top - margin.bottom);
 
     svg.selectAll("*").remove();
 
@@ -358,8 +585,8 @@ function drawWordCloud(words) {
 
     const placed = [];
     const collisionPadding = 3;
-    const centerX = width / 2;
-    const centerY = height / 2;
+    const centerX = margin.left + innerWidth / 2;
+    const centerY = margin.top + innerHeight / 2;
 
     words
         .slice()
@@ -389,7 +616,11 @@ function drawWordCloud(words) {
                     height: textHeight
                 };
 
-                const inBounds = box.x >= 0 && box.y >= 0 && box.x + box.width <= width && box.y + box.height <= height;
+                const inBounds =
+                    box.x >= margin.left &&
+                    box.y >= margin.top &&
+                    box.x + box.width <= width - margin.right &&
+                    box.y + box.height <= height - margin.bottom;
                 if (!inBounds) {
                     continue;
                 }
@@ -410,8 +641,8 @@ function drawWordCloud(words) {
 
             // If no exact spiral spot is found, try bounded random samples.
             for (let t = 0; t < 700 && !found; t += 1) {
-                const x = Math.random() * Math.max(1, width - textWidth);
-                const yTop = Math.random() * Math.max(1, height - textHeight);
+                const x = margin.left + Math.random() * Math.max(1, innerWidth - textWidth);
+                const yTop = margin.top + Math.random() * Math.max(1, innerHeight - textHeight);
                 const box = {
                     x,
                     y: yTop,
@@ -469,6 +700,7 @@ function truncate(text, maxLength) {
 
 function initializeTimelineFilters() {
     const timelineSeasonSelect = d3.select("#timelineSeasonSelect");
+    const timelineRangeSelect = d3.select("#timelineRangeSelect");
     const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
 
     const seasons = Array.from(new Set(globalActData.map(d => d.season))).sort((a, b) => a - b);
@@ -488,11 +720,21 @@ function initializeTimelineFilters() {
         .attr("value", d => d)
         .text(d => `Season ${d}`);
 
-    updateTimelineEpisodeOptions("all");
+    updateTimelineEpisodeOptions("all", "full");
+    updateTimelineEpisodeDisabledState("all");
+    updateTimelineRangeDisabledState("all");
 
     timelineSeasonSelect.on("change", function () {
         const selectedTimelineSeason = this.value;
-        updateTimelineEpisodeOptions(selectedTimelineSeason);
+        updateTimelineEpisodeOptions(selectedTimelineSeason, timelineRangeSelect.property("value") || "full");
+        updateTimelineEpisodeDisabledState(selectedTimelineSeason);
+        updateTimelineRangeDisabledState(selectedTimelineSeason);
+        renderTimelineFromFilters();
+    });
+
+    timelineRangeSelect.on("change", function () {
+        const selectedTimelineSeason = timelineSeasonSelect.property("value") || "all";
+        updateTimelineEpisodeOptions(selectedTimelineSeason, this.value || "full");
         renderTimelineFromFilters();
     });
 
@@ -501,7 +743,19 @@ function initializeTimelineFilters() {
     });
 }
 
-function updateTimelineEpisodeOptions(selectedTimelineSeason) {
+function updateTimelineEpisodeDisabledState(selectedSeason) {
+    const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
+    const isAllSeasons = selectedSeason === "all";
+    timelineEpisodeSelect.property("disabled", isAllSeasons);
+}
+
+function updateTimelineRangeDisabledState(selectedSeason) {
+    const timelineRangeSelect = d3.select("#timelineRangeSelect");
+    const isAllSeasons = selectedSeason === "all";
+    timelineRangeSelect.property("disabled", isAllSeasons);
+}
+
+function updateTimelineEpisodeOptions(selectedTimelineSeason, selectedRange = "full") {
     const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
 
     const sourceData = selectedTimelineSeason === "all"
@@ -509,6 +763,14 @@ function updateTimelineEpisodeOptions(selectedTimelineSeason) {
         : globalActData.filter(d => d.season === +selectedTimelineSeason);
 
     const episodes = Array.from(new Set(sourceData.map(d => d.episode))).sort((a, b) => a - b);
+    let filteredEpisodes = episodes;
+
+    if (selectedTimelineSeason !== "all" && selectedRange !== "full") {
+        const halfIndex = Math.ceil(episodes.length / 2);
+        filteredEpisodes = selectedRange === "first"
+            ? episodes.slice(0, halfIndex)
+            : episodes.slice(halfIndex);
+    }
 
     timelineEpisodeSelect.selectAll("option").remove();
     timelineEpisodeSelect
@@ -518,7 +780,7 @@ function updateTimelineEpisodeOptions(selectedTimelineSeason) {
 
     timelineEpisodeSelect
         .selectAll("option.timeline-episode-option")
-        .data(episodes)
+        .data(filteredEpisodes)
         .enter()
         .append("option")
         .attr("class", "timeline-episode-option")
@@ -534,12 +796,22 @@ function renderTimelineFromFilters() {
     }
 
     const timelineSeason = d3.select("#timelineSeasonSelect").property("value") || "all";
+    const timelineRange = d3.select("#timelineRangeSelect").property("value") || "full";
     const timelineEpisode = d3.select("#timelineEpisodeSelect").property("value") || "all";
 
     let filteredActData = globalActData;
 
     if (timelineSeason !== "all") {
         filteredActData = filteredActData.filter(d => d.season === +timelineSeason);
+
+        if (timelineRange !== "full") {
+            const seasonEpisodes = Array.from(new Set(filteredActData.map(d => d.episode))).sort((a, b) => a - b);
+            const halfIndex = Math.ceil(seasonEpisodes.length / 2);
+            const rangeEpisodes = timelineRange === "first"
+                ? new Set(seasonEpisodes.slice(0, halfIndex))
+                : new Set(seasonEpisodes.slice(halfIndex));
+            filteredActData = filteredActData.filter(d => rangeEpisodes.has(d.episode));
+        }
     }
 
     if (timelineEpisode !== "all") {
@@ -550,6 +822,15 @@ function renderTimelineFromFilters() {
 
     if (timelineSeason !== "all") {
         filteredLineData = filteredLineData.filter(d => d.season === +timelineSeason);
+
+        if (timelineRange !== "full") {
+            const seasonEpisodes = Array.from(new Set(filteredLineData.map(d => d.episode))).sort((a, b) => a - b);
+            const halfIndex = Math.ceil(seasonEpisodes.length / 2);
+            const rangeEpisodes = timelineRange === "first"
+                ? new Set(seasonEpisodes.slice(0, halfIndex))
+                : new Set(seasonEpisodes.slice(halfIndex));
+            filteredLineData = filteredLineData.filter(d => rangeEpisodes.has(d.episode));
+        }
     }
 
     if (timelineEpisode !== "all") {
@@ -593,7 +874,7 @@ function drawBarChart(data, filteredData) {
     const tooltip = d3.select("#tooltip");
     const width = 800;
     const height = 500;
-    const margin = { top: 20, right: 20, bottom: 50, left: 120 };
+    const margin = { top: 20, right: -200, bottom: 50, left: 120 };
 
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
@@ -692,6 +973,9 @@ function updateChart(selectedSeason) {
 function initializeWordSearch() {
     const input = d3.select("#wordSearch");
 
+    input.property("value", "island");
+    currentSearchTerm = "island";
+
     const triggerSearchUpdate = () => {
         currentSearchTerm = input.property("value").trim();
         updateWordSearchVisuals();
@@ -725,6 +1009,8 @@ function initializeWordSearch() {
             updateWordSearchVisuals();
         }, 120);
     });
+
+    updateWordSearchVisuals();
 
     drawChartMessage(
         "#lineChart",
@@ -833,7 +1119,7 @@ function drawWordFrequencyLineChart(series, query, selectedSeason) {
     const totalMentions = d3.sum(series, d => d.count);
     const firstMention = series.find(d => d.count > 0);
 
-    const margin = { top: 52, right: 22, bottom: 95, left: 72 };
+    const margin = { top: 52, right: 22, bottom: 85, left: 72 };
     const chartWidth = svgWidth - margin.left - margin.right;
     const chartHeight = svgHeight - margin.top - margin.bottom;
 
@@ -999,7 +1285,7 @@ function drawWordSpeakerBarChart(speakerCounts, query, selectedSeason) {
         return;
     }
 
-    const margin = { top: 52, right: 24, bottom: 48, left: 180 };
+    const margin = { top: 52, right: 24, bottom: 48, left: 80 };
     const chartWidth = svgWidth - margin.left - margin.right;
     const chartHeight = svgHeight - margin.top - margin.bottom;
 

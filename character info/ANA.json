@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Ana Lucia Cortez",
+    "subtitle": "Former military survivor",
+    "bio": "Ana Lucia is a tough, no-nonsense former soldier who brings military discipline to the crash survivors.",
+    "facts": {
+      "Role": "Protector",
+      "Focus": "Security and leadership",
+      "Known for": "Tactical thinking and resourcefulness"
+    },
+    "tags": ["Military", "Leadership", "Survival", "Discipline"]
+  }
+}

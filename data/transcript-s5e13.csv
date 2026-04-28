@@ -1,0 +1,411 @@
+season,episode,character,sentence
+5,13,TREVOR,Comes fully equipped.
+5,13,TREVOR,"I'm telling you, it's a steal at $400."
+5,13,TREVOR,"What, you gotta check with your husband?"
+5,13,WOMAN,It's just me.
+5,13,BOY,Mommy?
+5,13,BOY,Can I have a quarter for the vending machine?
+5,13,WOMAN,"Honey, I said wait for me by the pool."
+5,13,TREVOR,"I thought you said it was ""just me."""
+5,13,WOMAN,I meant my husband's out of the picture. It's just me and my son.
+5,13,TREVOR,I don't know. Most of the other tenants--they don't like noise.
+5,13,WOMAN,He's very quiet.
+5,13,TREVOR,I'm gonna need two months up front.
+5,13,WOMAN,"Here, honey."
+5,13,WOMAN,"Hey, no running! You hear me, Miles?"
+5,13,MILES,Mom! Mommy! Help!
+5,13,MILES,Mommy!
+5,13,LARA,Miles?
+5,13,LARA,"Miles, what happened?"
+5,13,MILES,Mommy!
+5,13,TREVOR,"Oh, God. Mr. Vonner."
+5,13,LARA,What were you doing in here?
+5,13,MILES,He... he was all alone. He was scared. His chest hurt. He kept calling out for Kimberly.
+5,13,TREVOR,"Kimberly? That's his wife. No, she died last year. Now, how would you know that?"
+5,13,MILES,I heard him.
+5,13,LARA,"Miles, what are you talking about?"
+5,13,MILES,He's still talking right now.
+5,13,LARA,Honey... he's dead.
+5,13,MILES,I told you! I can hear him! I can hear him!
+5,13,SAWYER,"Miles, you there? Pick up."
+5,13,MILES,"Jim, where the hell are you?"
+5,13,SAWYER,I'll fill you in later. Right now I need you to take care of something.
+5,13,MILES,Like what?
+5,13,SAWYER,The security tapes from the pylon camera feeds. They need to accidentally get erased.
+5,13,MILES,Erased? Why?
+5,13,SAWYER,"I ain't got time for questions, Miles. Just do it."
+5,13,MILES,"Okay. Okay. Uh, which ones?"
+5,13,SAWYER,Look on your monitors.
+5,13,SAWYER,You see us?
+5,13,MILES,Yeah. You're on number 4. Is that Kate? What the hell are you doing out there?
+5,13,SAWYER,"Just erase number 4. And if anyone asks, I'm off the grid. I'm looking for the escaped Hostile."
+5,13,MILES,You mean your pal Sayid?
+5,13,SAWYER,"Damn it, Miles! You gonna help me or not?!"
+5,13,MILES,"Yeah, yeah. I got it."
+5,13,SAWYER,All right. I owe you one.
+5,13,SAWYER,"All right, I want you to go back and and find Juliet, see if anyone's noticed yet if Little Ben's gone missin'."
+5,13,KATE,What are you gonna do when they find out?
+5,13,SAWYER,"Do my best to cover it up. In case you haven't noticed, I'm Head of Security."
+5,13,SAWYER,"All right, I'll see you back there."
+5,13,HORACE,Where's LaFleur?
+5,13,MILES,"Uh, he's, uh, out looking for the escaped prisoner. I tried to get him on his walkie, but..."
+5,13,MILES,"Uh, he must be out of range."
+5,13,HORACE,"Damn it. All right. Then it's gonna have to be you. Jim already knows about this, but I'm gonna bring you into the circle of trust. Can I trust you, Miles?"
+5,13,MILES,"Absolutely, Horace."
+5,13,HORACE,Okay. Good. I need you to take this out to Radzinsky at grid 3-34.
+5,13,HORACE,He's gonna give you something in return. I want you to bring it back to me with no questions asked. You understand?
+5,13,MILES,Um... we're not supposed to be in 3-3-4. Isn't that Hostile territory?
+5,13,HORACE,Welcome to the circle of trust.
+5,13,RADZINSKY,Stop right there!
+5,13,RADZINSKY,Miles?! What are you doing out here?! I was expecting LaFleur.
+5,13,MILES,LaFleur's busy. Horace sent me instead. I'm in the circle of trust.
+5,13,RADZINSKY,Get out!
+5,13,MILES,I'm supposed to give you this. And he said you had something for me.
+5,13,MILES,What happened to him?
+5,13,RADZINSKY,He had an accident.
+5,13,MILES,What kind of accident?
+5,13,RADZINSKY,He fell into a ditch.
+5,13,MILES,Is that a bullet hole in his head? The ditch had a gun?
+5,13,RADZINSKY,It doesn't matter what happened to him... because knowing that is not your job--your job is to do what I tell you to.
+5,13,RADZINSKY,"Take him back to Horace now, Miles."
+5,13,MILES,Okay... so what really happened?
+5,13,MILES,I need to see her.
+5,13,MILES,Ma? It's me.
+5,13,LARA,Miles.
+5,13,MILES,I'm--I'm sorry that... I couldn't make it by sooner.
+5,13,LARA,"It's okay. You're here now. Why did you come, Miles?"
+5,13,MILES,I need you to tell me why I'm this way... how... how I do the things I do. And I need to know why you won't talk to me about my father.
+5,13,LARA,Because he never cared about us... never cared about you.
+5,13,MILES,"I need to know where he is, Ma."
+5,13,LARA,It doesn't matter where.
+5,13,MILES,It does matter.
+5,13,LARA,"Miles, please."
+5,13,MILES,I have a right to know!
+5,13,LARA,He's dead.
+5,13,LARA,"Your father... kicked us out when you were just a baby. He didn't want anything to do with us. So the less you knew about him, the better."
+5,13,MILES,Why didn't you just tell me?
+5,13,LARA,Because it was over. Your dad has been dead a long time.
+5,13,MILES,Where's his body?
+5,13,LARA,Somewhere you can never go.
+5,13,HORACE,"Pierre, if it was caused by the electromagnetism, we need to know. You wanna see it now? Y--yeah, he just got back. I'll send him out with it right away. Okay!"
+5,13,HORACE,Did you bring the package?
+5,13,MILES,"""Package""? You mean the corpse?"
+5,13,HORACE,Yeah. Now I need you to bring it out to Dr. Chang at the Orchid.
+5,13,MILES,"Listen, man. I'm security. If you just need somebody to drive the van, can't someone from the motor pool do it?"
+5,13,HORACE,"If I wanted someone from the motor pool, I would have asked them. And since LaFleur decided to disappear, you're all I've got. So just bring it out to Dr. Chang, and we'll all call it a day. Okay?"
+5,13,MILES,Hey! What the hell are you doing?! That's my van!
+5,13,HURLEY,"Nah, dude, I just signed it out."
+5,13,MILES,Doesn't matter. It's mine.
+5,13,HURLEY,"Well, where you going?"
+5,13,MILES,The Orchid.
+5,13,HURLEY,"Me too. I made lunch for the crew. Sandwiches. Want one? Ham and cheese, and I made my secret garlic mayo."
+5,13,MILES,You're waiting for the next van.
+5,13,HURLEY,"Why? We're going to the same place. Why don't we carpool? It'll help with global warming, which hasn't happened yet, so maybe we can prevent it. ...Wait a sec. Are you on some kind of secret mission?"
+5,13,MILES,Just get in.
+5,13,KATE,Hi.
+5,13,JULIET,Hey.
+5,13,JULIET,How'd it go?
+5,13,KATE,We gave him to them--to the Others.
+5,13,JULIET,Anyone see you?
+5,13,KATE,I don't think so.
+5,13,JULIET,Did James help?
+5,13,KATE,Yes. Thank you so much for sending him.
+5,13,JULIET,Of course.
+5,13,ROGER,"Hey. I got here as soon as I could. All the vans were out, so I had to ru--"
+5,13,ROGER,Where's Ben? Did he...
+5,13,JULIET,"No! No, Roger."
+5,13,ROGER,Then where is he?
+5,13,JULIET,"Roger, I--I'm so sorry. I--I was gone for ten minutes. I--I--I don't know."
+5,13,ROGER,What? You--you said he was dying. How could he be gone?
+5,13,JULIET,I don't know! I'm--Roger--
+5,13,ROGER,"What is she telling me, that he just got up and walked out?"
+5,13,KATE,I don't know. I just got here--
+5,13,ROGER,You're his doctors! You're supposed to watch him!
+5,13,JULIET,"I know. I know. Roger, if we just calm down--"
+5,13,ROGER,Don't tell me to calm down! Somebody came and took my boy out of here?!
+5,13,JULIET,I know. I am so sorry.
+5,13,ROGER,I'm going to Security.
+5,13,JULIET,Well... here we go.
+5,13,STEREO,Got on board a westbound 747...
+5,13,HURLEY,"How do you spell ""bounty hunter""?"
+5,13,MILES,"What are you doing, writing your memoirs?"
+5,13,HURLEY,It's personal.
+5,13,HURLEY,Dude... did you just... you know?
+5,13,MILES,What?
+5,13,HURLEY,You know. It stinks. Did you...
+5,13,MILES,No.
+5,13,HURLEY,"Well, it wasn't me."
+5,13,MILES,So roll down your window.
+5,13,HURLEY,"Nah, man, there's something foul in here. It's coming from back there."
+5,13,MILES,Maybe it's your famous garlic mayo.
+5,13,HURLEY,Unh-unh. That's not possible.
+5,13,HURLEY,"Okay, maybe it is possible. Pull over. I gotta check."
+5,13,MILES,Forget it. You're imagining things.
+5,13,HURLEY,"I gotta check. If those sandwiches are bad, people could get sick."
+5,13,HURLEY,Will you pull over?!
+5,13,HURLEY,"Dude, there's a body bag back here. With a body in it."
+5,13,MILES,That's traditionally what you put in a body bag.
+5,13,HURLEY,"Yeah, well, who is he? What happened?"
+5,13,MILES,Don't worry about it and don't tell anybody you saw him.
+5,13,HURLEY,"Dude, what happened to him?"
+5,13,MILES,"His name's Alvarez. He was digging a hole and thinking about some chick named Andréa. Then he felt this sharp pain in his mouth, which turned out to be a filling from his tooth being yanked right out of its socket and... blowing through his brain. Then he was dead."
+5,13,HURLEY,How does a filling get blown through someone's head?
+5,13,MILES,Got me. Can we go now?
+5,13,HURLEY,How do you know all this?
+5,13,MILES,Because... I know.
+5,13,HURLEY,"Yeah, but how do you know what he was thinking?"
+5,13,MILES,I just know.
+5,13,HURLEY,You can talk to dead people.
+5,13,MILES,Can we please just go?
+5,13,HURLEY,"Don't worry, dude. Your secret's safe with me. You wanna know why?"
+5,13,MILES,No.
+5,13,HURLEY,"'Cause I can talk to 'em, too."
+5,13,MILES,"If you don't mind, Mr. Gray, can you tell me what happened to him?"
+5,13,MR. GRAY,"Last Labor Day weekend, drunk driver ran the light. That was that."
+5,13,MILES,Where is your son buried?
+5,13,MR. GRAY,"We cremated him, scattered the ashes on the football field at school."
+5,13,MILES,"For what I do, it's much better if there's a body."
+5,13,MR. GRAY,"Oh, but your ad said you could communicate with the dead anytime, anywhere."
+5,13,MILES,"I--I know what my ad says, Mr. Gray, but it--"
+5,13,MR. GRAY,Please. I just want you to ask him... did he know that I loved him?
+5,13,MILES,It's gonna cost extra.
+5,13,MR. GRAY,Of course.
+5,13,MR. GRAY,Thank you.
+5,13,MILES,"Uh... okay, now... please give me your hands."
+5,13,MILES,I want you to concentrate on Russell. Just get a picture of him in your head. Can you do that?
+5,13,MR. GRAY,Yeah. Okay.
+5,13,MR. GRAY,Did it work?
+5,13,MILES,Your son says he knew that you loved him. He always knew.
+5,13,MR. GRAY,Thank you.
+5,13,MILES,I'm sorry for your loss.
+5,13,NAOMI,Excuse me. Miles Straume?
+5,13,MILES,Yeah.
+5,13,NAOMI,Hi. My name's Naomi Dorrit.
+5,13,NAOMI,"My employer's been following your work for some time now, and he's interested in retaining your rather unique services."
+5,13,NAOMI,There's a restaurant not too far from here. Would you like to hear what I have to say?
+5,13,MILES,Yeah. Absolutely.
+5,13,KATE,"Hi, Roger."
+5,13,KATE,You okay?
+5,13,ROGER,"Let me see... Well, my son got shot and now he's disappeared, so... I think I'm pretty far from okay."
+5,13,KATE,"You know, I'm sure... things are gonna work out."
+5,13,ROGER,"Well, thanks for the pep talk."
+5,13,KATE,I just have a feeling he's gonna be okay.
+5,13,ROGER,"What do you mean, a feeling?"
+5,13,KATE,I just don't think that you should give up hope.
+5,13,ROGER,Do you know something? Do you know what happened to my son?
+5,13,KATE,"No, I don't."
+5,13,ROGER,Wait a minute. Why are you so interested in my kid?
+5,13,KATE,"You know, I'm sorry I came over here, all right? I was just trying to help."
+5,13,ROGER,"Oh, you're trying to help, huh? You wanna help, Kate?! Well, why don't you just mind your own business?"
+5,13,STEREO,Love / Love will keep us together...
+5,13,HURLEY,I don't know why you just won't admit it. You can trust me. I talk to lots of dead people.
+5,13,MILES,"So, you have conversations with them, like they're your pals?"
+5,13,HURLEY,"Sure, all the time. Sometimes we even play chess."
+5,13,MILES,You actually see them?
+5,13,HURLEY,Of course. Why wouldn't I?
+5,13,MILES,Because that's not how it works.
+5,13,HURLEY,Aha! You wouldn't know how it works unless you can do it.
+5,13,MILES,"What I can do has nothing to do with chatting with ghosts, you nitwit. It's a... feeling... a sense. When somebody's dead, their brain stops functioning, which means there's no more talking. There's just who they were and whatever they knew before they died."
+5,13,HURLEY,That's how it works for me.
+5,13,MILES,Great. I'm happy for you.
+5,13,HURLEY,You're just jealous my powers are better than yours.
+5,13,MILES,We're here. Now shut the hell up and deliver your damn sandwiches.
+5,13,DR. CHANG,What's he doing here?
+5,13,MILES,"Um, he came to deliver lunch to the work crew."
+5,13,DR. CHANG,Lunch? Your instructions were to come alone.
+5,13,HURLEY,Don't worry. I won't tell anyone about the body.
+5,13,DR. CHANG,He knows?
+5,13,MILES,"I'm sorry, sir. He--he was rooting around in the back, and he saw it."
+5,13,HURLEY,Dude. I can keep a secret.
+5,13,DR. CHANG,"Well, you'd better... ""Hurley"", 'cause if you think working in the kitchen is bad--"
+5,13,HURLEY,I like the kitchen.
+5,13,DR. CHANG,"Well, how do you feel about polar bear feces? Because if you breathe one word of this, I'll have you shipped to Hydra Island so you can weigh turds for their ridiculous experiments."
+5,13,HURLEY,Gross.
+5,13,DR. CHANG,You two! Get the package inside.
+5,13,DR. CHANG,And you? Stay here till I get back. You think you can handle that?
+5,13,MILES,"Yes, sir."
+5,13,FIRST DHARMA INITIATIVE MAN,"What the hell's he got, Jimmy Hoffa in here?"
+5,13,SECOND DHARMA INITIATIVE MAN,I don't know.
+5,13,FIRST DHARMA INITIATIVE MAN,Lift him.
+5,13,HURLEY,"Dude, that guy's a total douche."
+5,13,DR. CHANG,Don't... You are not qualified to be touching that!...
+5,13,MILES,That douche is my dad.
+5,13,DR. CHANG,What the hell do you think you're doing? What are you doing?!
+5,13,MILES,You did say you were taking me out to dinner.
+5,13,NAOMI,"No, I said I was taking you to a restaurant."
+5,13,MILES,"You wanna tell me what's back here, sweetheart?"
+5,13,NAOMI,Your audition.
+5,13,MILES,"Look, whatever you got going on here, this isn't really my thing."
+5,13,NAOMI,"From what I understand, Miles, if the price is right, this is exactly your thing."
+5,13,NAOMI,So what can you tell me about this man?
+5,13,MILES,"His name's Felix. He was... on his way to deliver something to, uh..."
+5,13,MILES,A guy named... Wid-more.
+5,13,NAOMI,Deliver what?
+5,13,MILES,"A bunch of papers, photos, pictures... of... empty graves. A purchase order... for an old airplane."
+5,13,MILES,So... did I pass?
+5,13,NAOMI,"I'm leading an expedition to an island, and on the island is a man that will be very difficult to find. That's why I need you."
+5,13,MILES,Need me for what?
+5,13,NAOMI,"This island has a number of deceased individuals... residing on it, and as this man is the one responsible for their being deceased, we believe they can supply invaluable information as to his whereabouts."
+5,13,MILES,"As much as hunting down a mass murderer sounds really safe, uh, I'm--I'm gonna pass. Thanks for the audition."
+5,13,NAOMI,My employer is willing to pay you $1.6 million.
+5,13,MILES,When do we leave?
+5,13,HURLEY,So anyway...
+5,13,MILES,I don't want to talk about it.
+5,13,HURLEY,"Are you kidding me? How weird is it that your dad is that dude from all those movies? Only back then, he was called Marvin Candle. Was that, like, a stage name?"
+5,13,MILES,"What part of ""I don't want to talk about it"" isn't sinking in?"
+5,13,HURLEY,"Well, if you didn't want to talk about it, why'd you tell me? How long have you known he was your dad?"
+5,13,MILES,"Third day we were here, I was on line at the cafeteria, and my mother got in line behind me. That was my first clue."
+5,13,HURLEY,But all those DHARMA dudes end up dead. Don't you wanna... save him?
+5,13,MILES,"I can't save him! They're gonna get killed no matter what I do, so why bother?"
+5,13,DR. CHANG,I need you to take me to Radzinsky at the work site. Immediately. You... Hurley--you say a word...
+5,13,HURLEY,Polar bear poop. Got it.
+5,13,MILES,What happened to the body?
+5,13,DR. CHANG,What body?
+5,13,ROGER,This room is on my rounds. What are you doing here?
+5,13,JACK,I figured I'd cover for ya. I heard what happened to your son.
+5,13,ROGER,Which part--that he got shot or that someone kidnapped him from the Infirmary?
+5,13,JACK,Then what are you doing here at work?
+5,13,ROGER,What else am I gonna do? Sit around and pray that those idiots are gonna find my boy? So you can get outta here.
+5,13,ROGER,"You came in here a couple days ago with that woman Kate, right?"
+5,13,JACK,Yeah.
+5,13,ROGER,You know her at all?
+5,13,JACK,Why?
+5,13,ROGER,"'Cause she's got some... kinda weird thing for my kid. First, she shows up at the infirmary and gave him blood. But then when he goes missing, she comes to me and she says, ""Don't worry. He's gonna be okay."" I'm gonna tell you somethin', man. I'm beginning to think that she's got something to do with this. I should go to Horace, report her. What do you think?"
+5,13,JACK,"I think, Roger, that, uh, that you've had a hell of a day, and that... it's given you a very good excuse to go out and get drunk. Maybe that's put some--some crazy ideas into your head. I know that woman--Kate. She's my friend, and she would never do anything to hurt your son."
+5,13,ROGER,Sure.
+5,13,HURLEY,"So I'm new here, Dr. Chang. What is it exactly you do at the Orchid?"
+5,13,DR. CHANG,It's classified.
+5,13,HURLEY,"Oh, really? You can't tell anyone? Not even your wife?"
+5,13,DR. CHANG,No.
+5,13,HURLEY,What about your kids?
+5,13,DR. CHANG,"I have a 3-month-old son, so, no, I haven't told him."
+5,13,HURLEY,3 months? Wow! Congrats. What's his name?
+5,13,DR. CHANG,Miles.
+5,13,HURLEY,"Small world! That's your name, too. Right, Miles?"
+5,13,MILES,Yeah.
+5,13,HURLEY,"So are you a fan of jazz, Dr. Chang? Like Miles Davis?"
+5,13,DR. CHANG,My wife is. I like country.
+5,13,HURLEY,"So you two have been here for... three years now. Must be pretty tight, huh?"
+5,13,MILES,Dr. Chang and I... don't exactly travel in the same circles.
+5,13,DR. CHANG,I wasn't aware there were circles.
+5,13,HURLEY,Great. We should all... get together for a beer sometime. How awesome would that be?
+5,13,DR. CHANG,Stop here.
+5,13,DR. CHANG,You don't need to wait. I'll get a ride back with Radzinsky.
+5,13,HURLEY,"Dude, what is this place? And what's up with all the secrecy?"
+5,13,MILES,Don't know. Don't care.
+5,13,WORKER,"Hey, Glenn! What's the serial number that goes on the hatch lid?"
+5,13,GLENN,"4, 8..."
+5,13,GLENN,15...
+5,13,GLENN,16...
+5,13,GLENN,23...
+5,13,GLENN,Hold on a minute. It's smudged.
+5,13,HURLEY,42.
+5,13,GLENN,42.
+5,13,MILES,How the hell did you know that?
+5,13,HURLEY,'Cause they're building our hatch.
+5,13,MILES,What hatch?
+5,13,HURLEY,The one that crashed our plane.
+5,13,MILES,Thanks.
+5,13,MAN IN VAN,"Hey, Miles."
+5,13,MILES,Do I know you?
+5,13,MAN IN VAN,Miles! My name's Bram.
+5,13,MILES,You owe me a fish taco.
+5,13,BRAM,"Sorry about that, but your apartment's being watched. And we had to try our best to talk you out of working for Charles Widmore."
+5,13,MILES,I have no idea who that is.
+5,13,BRAM,"He's the man who chartered the boat you'll be getting on next week. And, my friend, you do not want to get on that boat. Do you know what lies in the shadow of the statue?"
+5,13,MILES,"No, can't say that I do."
+5,13,BRAM,"Then you're not ready to go to that island. But if you come with us--all those things you've spent your life trying to find out? You'll know. You'll know who you are, Miles--why it is you have a gift, and most of all, you'll know about your father."
+5,13,MILES,"I don't know where you've been getting your intel, but I stopped caring about my father a long time ago. What I do care about is money. So, I'll tell you what. You want me to pass on going to the Island? It's gonna cost you double what they offered--$3.2 million."
+5,13,BRAM,"We're not paying you anything. All the money in the world isn't gonna fill that empty hole inside you, Miles."
+5,13,MILES,"That's sad, isn't it?"
+5,13,BRAM,Toss him!
+5,13,BRAM,You're playing for the wrong team!
+5,13,MILES,Yeah? What team are you on?
+5,13,BRAM,The one that's gonna win.
+5,13,HURLEY,"That hatch they're building? There's gonna be an accident, then they're gonna have to build a computer with a button you have to push so the world doesn't end."
+5,13,HURLEY,"So your dad... is he around... you know, when we came from? The future?"
+5,13,MILES,No.
+5,13,HURLEY,"Well, then this is kind of awesome for you, huh?"
+5,13,MILES,How is it awesome?!
+5,13,HURLEY,"Because you get to hang out with him, you know, get to know him better and stuff."
+5,13,MILES,Ch.
+5,13,HURLEY,"And don't bother thanking me, but he was totally down for that beer, dude. You know, and maybe he'll let you hold baby you, or you can change your own diaper or--"
+5,13,HURLEY,Whoa!
+5,13,MILES,"Listen up, 'cause we're only gonna have this conversation once. Okay? I don't want to ""hang out"" with my dad. I don't want to ""know him better""... ""and stuff""."
+5,13,HURLEY,Why not? Did he beat you up when you were little or something?
+5,13,MILES,"He wasn't even around when I was little, you dimwit! I never knew him, until now. Why am I even telling you this?"
+5,13,HURLEY,'Cause you're in pain and you need to let it out.
+5,13,MILES,"I'm not in pain! It doesn't matter. My father is dead! He's gone! He never cared about me, and nothing I can do will ever change that."
+5,13,HURLEY,But he's not gone. We just dropped him off.
+5,13,MILES,You want to get into my business?
+5,13,MILES,Let's get into yours!
+5,13,HURLEY,Give that back to me.
+5,13,MILES,How about we read your little diary?
+5,13,HURLEY,It's not a diary! It's personal!!
+5,13,MILES,Let's see what's going on--
+5,13,HURLEY,Give that--give that back to me.
+5,13,MILES,--in that piece of granite you call a head.
+5,13,HURLEY,Give it back!
+5,13,MILES,"""Exterior--Hoth. A little spy robot thingy zips through the atmosphere and crashes into the snowy planet below. That's when Chewbacca shows up and blasts it away with his crossbow laser. He shakes his fury fist in the sky in triumph. Chewbacca--Raaar."""
+5,13,HURLEY,"It's ""furry."" ""Furry fist."" I need a spell-check."
+5,13,MILES,What the hell is this?
+5,13,HURLEY,I'm writing Empire Strikes Back.
+5,13,MILES,Uh... I'm sorry. What?
+5,13,HURLEY,"It's 1977, right?"
+5,13,HURLEY,"So Stars Wars just came out. And pretty soon, George Lucas is gonna be looking for a sequel. I've seen Empire, like, 200 times, so I figured I'd make life easier and send him the script... with a couple improvements."
+5,13,MILES,That has gotta be the stupidest thing I've ever heard.
+5,13,HURLEY,"Oh, yeah? Well, at least I'm not scared to talk to my own dad."
+5,13,JULIET,James. You're back.
+5,13,SAWYER,Barely. You ever had one of those days you feel like the little Dutch boy with your finger in the...
+5,13,SAWYER,Doc. Hey. What's going on?
+5,13,JACK,Ben's father thinks that Kate had something to do with his son going missing.
+5,13,SAWYER,Why the hell would he think that?
+5,13,JULIET,"Because she talked to him, tried to make him feel better."
+5,13,JACK,Her heart was in the right place.
+5,13,SAWYER,"Yeah, well, where was her head?"
+5,13,JACK,I had a talk with Roger. I don't think he's gonna say anything to anyone for now. Just wanted you to know.
+5,13,JACK,Thank you.
+5,13,JULIET,Mm.
+5,13,SAWYER,"Yeah? Well... thanks for filling me in, Doc."
+5,13,JACK,No problem.
+5,13,PHIL,"Hey, boss."
+5,13,SAWYER,Hey.
+5,13,PHIL,We got a development. You better come to the office.
+5,13,SAWYER,"Phil, I've been running around the jungle all day, so whatever developments you got can wait a while."
+5,13,PHIL,I know who took the kid.
+5,13,SAWYER,Yeah? Who's that?
+5,13,PHIL,You.
+5,13,SAWYER,Got a perfectly good explanation for what you saw on that tape.
+5,13,PHIL,I sure as hell hope so.
+5,13,SAWYER,You talk to Horace yet?
+5,13,PHIL,"No. I thought that after three years of working together, I'd give you the benefit of the doubt--"
+5,13,SAWYER,Get some rope.
+5,13,MILES,Mr. Gray? I hope you don't mind. Your gate was open.
+5,13,MR. GRAY,"Mr. Straume. Of course. Of course. No problem. What, uh, what brings you by?"
+5,13,MILES,"Well, sir, uh... I'm about to go on a boat trip for a while, and... I wanted to give this back to you."
+5,13,MILES,"I lied to you, Mr. Gray. I wasn't able to talk to your son."
+5,13,MR. GRAY,Why are you telling me this? You could have just let me go on believing what you said.
+5,13,MILES,That wouldn't have been fair to your son.
+5,13,MR. GRAY,I'm sorry?
+5,13,MILES,"If you needed your son to know that you loved him, you should've told him when he was still alive."
+5,13,HURLEY,"Sorry I said you were afraid to talk to your dad, dude."
+5,13,MILES,Don't worry about it.
+5,13,HURLEY,"I used to hate my dad, too."
+5,13,MILES,Yeah?
+5,13,HURLEY,"He left when I was 10. But the best thing I ever did was give him a second chance. We got to be the best of friends, and although I may never see him again, I miss him. And I know he feels the same."
+5,13,MILES,My dad didn't leave when I was 10. I--I was a baby. I never knew him. And I don't want to. It's not happening.
+5,13,HURLEY,"That was Luke's attitude, too."
+5,13,MILES,What?
+5,13,HURLEY,"In Empire, Luke found out Vader was his father, but instead of putting away his lightsaber and talking about it, he overreacted and got his hand cut off. I mean, they worked it out eventually, but at what cost? Another Death Star was destroyed, Boba Fett got eaten by the Sarlacc, and we got the Ewoks. It all could've been avoided if they'd just, you know, communicated. And let's face it. The Ewoks sucked, dude."
+5,13,DR. CHANG,"Wow! Oh, wow!"
+5,13,LARA,"Hello? Oh, one moment. It's for you."
+5,13,DR. CHANG,Hello? All right. I'll be right there.
+5,13,DR. CHANG,Miles! I need you.
+5,13,MILES,You do?
+5,13,DR. CHANG,Sub's here from H.Q. I need your help bringing them in.
+5,13,MILES,Sure. New recruits?
+5,13,DR. CHANG,"No, uh, scientists from Ann Arbor. Get your van, and let's get to the dock."
+5,13,MAN,"Hey, can I get a hand with this?"
+5,13,MILES,"Yeah, yeah, sure."
+5,13,MILES,Dan.
+5,13,FARADAY,"Hey, Miles. Long time no see."

@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Daniel Faraday",
+    "subtitle": "Physicist and time researcher",
+    "bio": "Daniel is a brilliant physicist whose obsession with time and the island's mysteries drives crucial plot points.",
+    "facts": {
+      "Role": "Scientist",
+      "Focus": "Time and physics",
+      "Known for": "Complex experiments and passion"
+    },
+    "tags": ["Physics", "Time", "Science", "Mystery"]
+  }
+}

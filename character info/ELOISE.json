@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Eloise Hawking",
+    "subtitle": "Cryptic time expert",
+    "bio": "Eloise is a mysterious woman with deep knowledge of time, fate, and the island's secrets.",
+    "facts": {
+      "Role": "Oracle",
+      "Focus": "Fate and guidance",
+      "Known for": "Cryptic wisdom and time knowledge"
+    },
+    "tags": ["Mystery", "Fate", "Time", "Guidance"]
+  }
+}
