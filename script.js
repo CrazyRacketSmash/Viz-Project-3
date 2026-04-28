@@ -1,7 +1,32 @@
-const selectedSeason = "all";
 let globalData;
 let globalActData;
+
 const TIMELINE_TOP_N = 15;
+const MAIN_CHARACTER_COUNT = 18;
+const TOP_WORDS_N = 18;
+const WORD_CLOUD_N = 55;
+const TOP_PHRASES_N = 14;
+
+const STOP_WORDS = new Set([
+    "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "arent", "as", "at",
+    "be", "because", "been", "before", "being", "below", "between", "both", "but", "by",
+    "can", "cant", "cannot", "could", "couldnt",
+    "did", "didnt", "do", "does", "doesnt", "doing", "dont", "down", "during",
+    "each", "few", "for", "from", "further",
+    "had", "hadnt", "has", "hasnt", "have", "havent", "having", "he", "hed", "hell", "hes", "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how", "hows",
+    "i", "id", "ill", "im", "ive", "if", "in", "into", "is", "isnt", "it", "its", "itself",
+    "just",
+    "lets",
+    "me", "more", "most", "mustnt", "my", "myself",
+    "no", "nor", "not", "now",
+    "of", "off", "on", "once", "only", "or", "other", "our", "ours", "ourselves", "out", "over", "own",
+    "same", "she", "shed", "shell", "shes", "should", "shouldnt", "so", "some", "such",
+    "than", "that", "thats", "the", "their", "theirs", "them", "themselves", "then", "there", "theres", "these", "they", "theyd", "theyll", "theyre", "theyve", "this", "those", "through", "to", "too",
+    "under", "until", "up",
+    "very",
+    "was", "wasnt", "we", "wed", "well", "were", "weve", "were", "werent", "what", "whats", "when", "whens", "where", "wheres", "which", "while", "who", "whos", "whom", "why", "whys", "with", "wont", "would", "wouldnt",
+    "you", "youd", "youll", "youre", "youve", "your", "yours", "yourself", "yourselves"
+]);
 
 Promise
     .all([
@@ -12,6 +37,8 @@ Promise
         lineData.forEach(d => {
             d.season = +d.season;
             d.episode = +d.episode;
+            d.character = String(d.character || "").trim().toUpperCase();
+            d.sentence = String(d.sentence || "").trim();
         });
 
         actData.forEach(d => {
@@ -25,13 +52,411 @@ Promise
         globalActData = actData;
 
         initializeTimelineFilters();
+        initializeTextExplorer();
+
         updateChart("all");
+        updateTextExplorer();
 
         d3.select("#seasonSelect").on("change", function () {
             const selectedSeason = this.value;
             updateChart(selectedSeason);
         });
+
+        d3.select("#characterSelect").on("change", updateTextExplorer);
+        d3.select("#textSeasonSelect").on("change", updateTextExplorer);
     });
+
+function initializeTextExplorer() {
+    const characterSelect = d3.select("#characterSelect");
+    const textSeasonSelect = d3.select("#textSeasonSelect");
+
+    const characterCounts = d3.rollups(
+        globalData,
+        v => v.length,
+        d => d.character
+    )
+        .map(([character, count]) => ({ character, count }))
+        .filter(d => d.character)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, MAIN_CHARACTER_COUNT);
+
+    characterSelect
+        .selectAll("option")
+        .data(characterCounts)
+        .enter()
+        .append("option")
+        .attr("value", d => d.character)
+        .text(d => d.character);
+
+    const seasons = Array.from(new Set(globalData.map(d => d.season))).sort((a, b) => a - b);
+
+    textSeasonSelect.append("option")
+        .attr("value", "all")
+        .text("All Seasons");
+
+    textSeasonSelect
+        .selectAll("option.season-option")
+        .data(seasons)
+        .enter()
+        .append("option")
+        .attr("class", "season-option")
+        .attr("value", d => d)
+        .text(d => `Season ${d}`);
+}
+
+function updateTextExplorer() {
+    const selectedCharacter = d3.select("#characterSelect").property("value");
+    const selectedSeason = d3.select("#textSeasonSelect").property("value") || "all";
+
+    let characterData = globalData.filter(d => d.character === selectedCharacter);
+    if (selectedSeason !== "all") {
+        characterData = characterData.filter(d => d.season === +selectedSeason);
+    }
+
+    const tokensBySentence = characterData
+        .map(d => tokenizeSentence(d.sentence))
+        .filter(tokens => tokens.length > 0);
+
+    const allTokens = tokensBySentence.flat();
+    const wordCounts = countItems(allTokens);
+
+    const topWords = wordCounts
+        .map(([word, count]) => ({ word, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, TOP_WORDS_N);
+
+    const cloudWords = wordCounts
+        .map(([word, count]) => ({ word, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, WORD_CLOUD_N);
+
+    const topPhrases = extractTopPhrases(tokensBySentence)
+        .slice(0, TOP_PHRASES_N);
+
+    updateTextSummary(selectedCharacter, selectedSeason, characterData, allTokens, wordCounts.length);
+
+    drawWordCloud(cloudWords);
+    drawWordFrequencyBars(topWords);
+    drawPhraseBars(topPhrases);
+}
+
+function updateTextSummary(selectedCharacter, selectedSeason, characterData, allTokens, uniqueWordCount) {
+    const summary = d3.select("#textSummary");
+    const seasonLabel = selectedSeason === "all" ? "All Seasons" : `Season ${selectedSeason}`;
+
+    summary.text(
+        `${selectedCharacter} | ${seasonLabel} | Lines: ${characterData.length.toLocaleString()} | ` +
+        `Filtered Words: ${allTokens.length.toLocaleString()} | Unique Words: ${uniqueWordCount.toLocaleString()}`
+    );
+}
+
+function tokenizeSentence(sentence) {
+    return String(sentence || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9'\s-]/g, " ")
+        .replace(/\b\d+\b/g, " ")
+        .split(/\s+/)
+        .map(token => token.replace(/^'+|'+$/g, ""))
+        .filter(token => token.length > 1)
+        .filter(token => /^[a-z][a-z'-]*$/.test(token))
+        .filter(token => !STOP_WORDS.has(token.replace(/'/g, "")));
+}
+
+function countItems(items) {
+    const counts = new Map();
+
+    items.forEach(item => {
+        counts.set(item, (counts.get(item) || 0) + 1);
+    });
+
+    return Array.from(counts.entries());
+}
+
+function extractTopPhrases(tokensBySentence) {
+    const phraseCounts = new Map();
+
+    tokensBySentence.forEach(tokens => {
+        [2, 3, 4].forEach(n => {
+            if (tokens.length < n) {
+                return;
+            }
+
+            for (let i = 0; i <= tokens.length - n; i += 1) {
+                const phrase = tokens.slice(i, i + n).join(" ");
+                phraseCounts.set(phrase, (phraseCounts.get(phrase) || 0) + 1);
+            }
+        });
+    });
+
+    return Array.from(phraseCounts.entries())
+        .map(([phrase, count]) => ({ phrase, count }))
+        .filter(d => d.count >= 2)
+        .sort((a, b) => b.count - a.count || b.phrase.length - a.phrase.length);
+}
+
+function drawWordFrequencyBars(topWords) {
+    const svg = d3.select("#wordBars");
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+    const margin = { top: 15, right: 20, bottom: 60, left: 120 };
+
+    svg.selectAll("*").remove();
+
+    if (!topWords.length) {
+        drawEmptyState(svg, width, height, "No words available for this selection.");
+        return;
+    }
+
+    const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(topWords, d => d.count) || 1])
+        .nice()
+        .range([0, chartWidth]);
+
+    const y = d3.scaleBand()
+        .domain(topWords.map(d => d.word))
+        .range([0, chartHeight])
+        .padding(0.15);
+
+    g.selectAll("rect")
+        .data(topWords)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", d => y(d.word))
+        .attr("height", y.bandwidth())
+        .attr("width", d => x(d.count))
+        .attr("fill", "#2b7bba");
+
+    g.selectAll("text.bar-label")
+        .data(topWords)
+        .enter()
+        .append("text")
+        .attr("class", "bar-label")
+        .attr("x", d => x(d.count) + 4)
+        .attr("y", d => (y(d.word) || 0) + y.bandwidth() / 2)
+        .attr("dominant-baseline", "middle")
+        .style("font-size", "11px")
+        .text(d => d.count);
+
+    g.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(x));
+
+    g.append("g")
+        .call(d3.axisLeft(y));
+
+    g.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + 45)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text("Word Frequency");
+}
+
+function drawPhraseBars(topPhrases) {
+    const svg = d3.select("#phraseBars");
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+    const margin = { top: 15, right: 20, bottom: 60, left: 200 };
+
+    svg.selectAll("*").remove();
+
+    if (!topPhrases.length) {
+        drawEmptyState(svg, width, height, "No repeated phrase patterns found in this selection.");
+        return;
+    }
+
+    const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(topPhrases, d => d.count) || 1])
+        .nice()
+        .range([0, chartWidth]);
+
+    const y = d3.scaleBand()
+        .domain(topPhrases.map(d => d.phrase))
+        .range([0, chartHeight])
+        .padding(0.15);
+
+    g.selectAll("rect")
+        .data(topPhrases)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", d => y(d.phrase))
+        .attr("height", y.bandwidth())
+        .attr("width", d => x(d.count))
+        .attr("fill", "#1a936f");
+
+    g.selectAll("text.bar-label")
+        .data(topPhrases)
+        .enter()
+        .append("text")
+        .attr("class", "bar-label")
+        .attr("x", d => x(d.count) + 4)
+        .attr("y", d => (y(d.phrase) || 0) + y.bandwidth() / 2)
+        .attr("dominant-baseline", "middle")
+        .style("font-size", "11px")
+        .text(d => d.count);
+
+    g.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format("d")));
+
+    g.append("g")
+        .call(d3.axisLeft(y).tickFormat(value => truncate(value, 28)));
+
+    g.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + 45)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text("Phrase Frequency");
+}
+
+function drawWordCloud(words) {
+    const svg = d3.select("#wordCloud");
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+
+    svg.selectAll("*").remove();
+
+    if (!words.length) {
+        drawEmptyState(svg, width, height, "No words available for this selection.");
+        return;
+    }
+
+    const sizeScale = d3.scaleSqrt()
+        .domain([1, d3.max(words, d => d.count) || 1])
+        .range([12, 56]);
+
+    const colorScale = d3.scaleLinear()
+        .domain([1, d3.max(words, d => d.count) || 1])
+        .range([0.25, 0.95]);
+
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    const placed = [];
+    const collisionPadding = 3;
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    words
+        .slice()
+        .sort((a, b) => b.count - a.count)
+        .forEach((wordObj, idx) => {
+            const size = sizeScale(wordObj.count);
+            context.font = `${size}px sans-serif`;
+            const textWidth = context.measureText(wordObj.word).width;
+            const textHeight = size;
+
+            let found = false;
+            let finalBox = null;
+
+            // Place larger words first using an expanding spiral with slight jitter.
+            for (let t = 0; t < 2200 && !found; t += 1) {
+                const angle = 0.34 * t;
+                const radius = 3.8 * Math.sqrt(t);
+                const jitterX = (Math.random() - 0.5) * 2.2;
+                const jitterY = (Math.random() - 0.5) * 2.2;
+                const x = centerX + radius * Math.cos(angle) + jitterX - textWidth / 2;
+                const yTop = centerY + radius * Math.sin(angle) + jitterY - textHeight / 2;
+
+                const box = {
+                    x,
+                    y: yTop,
+                    width: textWidth,
+                    height: textHeight
+                };
+
+                const inBounds = box.x >= 0 && box.y >= 0 && box.x + box.width <= width && box.y + box.height <= height;
+                if (!inBounds) {
+                    continue;
+                }
+
+                const overlaps = placed.some(p => (
+                    box.x < p.x + p.width + collisionPadding &&
+                    box.x + box.width + collisionPadding > p.x &&
+                    box.y < p.y + p.height + collisionPadding &&
+                    box.y + box.height + collisionPadding > p.y
+                ));
+
+                if (!overlaps) {
+                    found = true;
+                    finalBox = box;
+                    placed.push(box);
+                }
+            }
+
+            // If no exact spiral spot is found, try bounded random samples.
+            for (let t = 0; t < 700 && !found; t += 1) {
+                const x = Math.random() * Math.max(1, width - textWidth);
+                const yTop = Math.random() * Math.max(1, height - textHeight);
+                const box = {
+                    x,
+                    y: yTop,
+                    width: textWidth,
+                    height: textHeight
+                };
+
+                const overlaps = placed.some(p => (
+                    box.x < p.x + p.width + collisionPadding &&
+                    box.x + box.width + collisionPadding > p.x &&
+                    box.y < p.y + p.height + collisionPadding &&
+                    box.y + box.height + collisionPadding > p.y
+                ));
+
+                if (!overlaps) {
+                    found = true;
+                    finalBox = box;
+                    placed.push(box);
+                }
+            }
+
+            // Skip drawing if we cannot safely place the word.
+            if (!found || !finalBox) {
+                return;
+            }
+
+            svg.append("text")
+                .attr("x", finalBox.x)
+                .attr("y", finalBox.y + textHeight)
+                .style("font-family", "sans-serif")
+                .style("font-size", `${size}px`)
+                .style("fill", d3.interpolatePuBuGn(colorScale(wordObj.count)))
+                .style("opacity", idx < 20 ? 0.95 : 0.85)
+                .text(wordObj.word);
+        });
+}
+
+function drawEmptyState(svg, width, height, message) {
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "13px")
+        .style("fill", "#666")
+        .text(message);
+}
+
+function truncate(text, maxLength) {
+    if (text.length <= maxLength) {
+        return text;
+    }
+
+    return `${text.slice(0, maxLength - 1)}...`;
+}
 
 function initializeTimelineFilters() {
     const timelineSeasonSelect = d3.select("#timelineSeasonSelect");
@@ -169,33 +594,31 @@ function drawBarChart(data, filteredData) {
         d => d.character
     );
 
-    // convert to lookup object
     const episodeMap = Object.fromEntries(episodeCounts);
 
-    svg.selectAll("*").remove(); // clear old chart
+    svg.selectAll("*").remove();
 
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // scales
     const x = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.count) || 0])
         .nice()
         .range([0, chartWidth]);
 
-        g.append("text")
-            .attr("x", chartWidth / 2)
-            .attr("y", chartHeight + 40)
-            .attr("text-anchor", "middle")
-            .style("font-size", "18px")
-            .text("Number of Lines Spoken");
+    g.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + 40)
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .text("Number of Lines Spoken");
 
     const y = d3.scaleBand()
         .domain(data.map(d => d.character))
         .range([0, chartHeight])
         .padding(0.2);
 
-        g.append("text")
+    g.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -chartHeight / 2)
         .attr("y", -80)
@@ -203,7 +626,6 @@ function drawBarChart(data, filteredData) {
         .style("font-size", "18px")
         .text("Characters");
 
-    // bars
     g.selectAll("rect")
         .data(data)
         .enter()
@@ -212,42 +634,25 @@ function drawBarChart(data, filteredData) {
         .attr("width", d => x(d.count))
         .attr("height", y.bandwidth())
         .attr("fill", "steelblue")
+        .on("mouseover", (event, d) => {
+            const episodes = episodeMap[d.character] || 0;
+            tooltip.style("display", "block")
+                .html(`<strong>${d.character}</strong><br>Lines: ${d.count}<br>Episodes: ${episodes}`);
+        })
+        .on("mousemove", event => {
+            tooltip.style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
 
-    .on("mouseover", (event, d) => {
-        const episodes = episodeMap[d.character] || 0;
-        tooltip.style("display", "block")
-            .html(`<strong>${d.character}</strong><br>
-            Lines: ${d.count}<br>
-            Episodes: ${episodes}`);
-    })
-    .on("click", (event, d) => {
-        const characterData = data.filter(x => x.character === d.character);
-
-        const perEpisode = d3.rollups(
-            characterData,
-            v => v.length,
-            d => d.episode
-        );
-
-        console.log(perEpisode);
-    })
-    .on("mousemove", (event) => {
-        tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY + 10) + "px");
-    })
-    .on("mouseout", () => {
-        tooltip.style("display", "none");
-    });
-
-    // x-axis
     g.append("g")
         .attr("transform", `translate(0,${chartHeight})`)
         .call(d3.axisBottom(x));
 
-    // y-axis
     g.append("g")
         .call(d3.axisLeft(y));
-
 }
 
 function updateChart(selectedSeason) {
@@ -259,7 +664,6 @@ function updateChart(selectedSeason) {
         filteredData = globalData.filter(d => d.season === +selectedSeason);
     }
 
-    // aggregate lines
     const characterCounts = d3.rollups(
         filteredData,
         v => v.length,
@@ -338,7 +742,6 @@ function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
         .domain(yDomain)
         .range([0, chartHeight]);
 
-    // Characters in the same act share a y-position so lines merge.
     const mergedYByActChar = new Map();
     filteredActs.forEach(act => {
         const key = `${act.season}-${act.episode}-${act.act_number}`;
@@ -373,10 +776,8 @@ function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
         filteredActs.forEach((act, index) => {
             const actKey = `${act.season}-${act.episode}-${act.act_number}`;
             const mergedY = mergedYByActChar.get(`${character}|${actKey}`);
-            // If the character is absent in this act, return to their base lane.
             const yValue = mergedY !== undefined ? mergedY : yBase(character);
 
-            // Keep the start anchored at the character lane, then transition into act 1.
             if (index === 0) {
                 points.push({ actKey, index: 0.001, y: yValue });
             } else {

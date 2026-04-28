@@ -36,6 +36,36 @@
 
   <svg id="chart" width="800" height="500"></svg>
 
+  <section id="textExplorer">
+    <h2>Character Language Explorer</h2>
+    <div class="controls text-controls">
+      <label for="characterSelect">Character:</label>
+      <select id="characterSelect"></select>
+
+      <label for="textSeasonSelect">Text Dataset:</label>
+      <select id="textSeasonSelect"></select>
+    </div>
+
+    <p id="textSummary"></p>
+
+    <div class="text-grid">
+      <div class="viz-card">
+        <h3>Word Cloud (Stop Words Removed)</h3>
+        <svg id="wordCloud" width="600" height="360"></svg>
+      </div>
+
+      <div class="viz-card">
+        <h3>Top Words</h3>
+        <svg id="wordBars" width="600" height="360"></svg>
+      </div>
+
+      <div class="viz-card">
+        <h3>Frequent Phrases</h3>
+        <svg id="phraseBars" width="600" height="360"></svg>
+      </div>
+    </div>
+  </section>
+
   <div class="controls timeline-controls">
     <label for="timelineSeasonSelect">Timeline Season:</label>
     <select id="timelineSeasonSelect"></select>
