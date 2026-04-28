@@ -1,6 +1,14 @@
 let globalData;
 let globalActData;
+let currentSearchTerm = "";
+let wordSearchDebounceTimer = null;
 
+const selectedSeason = "all";
+const WORD_CHART_WIDTH = 560;
+const WORD_CHART_DEFAULT_HEIGHT = 440;
+const WORD_TOP_SPEAKERS = 12;
+const WORD_CHART_MIN_WIDTH = 320;
+const WORD_CHART_MIN_HEIGHT = 280;
 const TIMELINE_TOP_N = 15;
 const MAIN_CHARACTER_COUNT = 18;
 const TOP_WORDS_N = 18;
@@ -52,6 +60,7 @@ Promise
         globalActData = actData;
 
         initializeTimelineFilters();
+        initializeWordSearch();
         initializeTextExplorer();
 
         updateChart("all");
@@ -677,6 +686,460 @@ function updateChart(selectedSeason) {
 
     drawBarChart(processed, filteredData);
     renderTimelineFromFilters();
+    updateWordSearchVisuals();
+}
+
+function initializeWordSearch() {
+    const input = d3.select("#wordSearch");
+
+    const triggerSearchUpdate = () => {
+        currentSearchTerm = input.property("value").trim();
+        updateWordSearchVisuals();
+    };
+
+    // Live feedback while typing.
+    input.on("input", () => {
+        if (wordSearchDebounceTimer) {
+            clearTimeout(wordSearchDebounceTimer);
+        }
+        wordSearchDebounceTimer = setTimeout(() => {
+            triggerSearchUpdate();
+        }, 120);
+    });
+
+    input.on("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            if (wordSearchDebounceTimer) {
+                clearTimeout(wordSearchDebounceTimer);
+            }
+            triggerSearchUpdate();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (wordSearchDebounceTimer) {
+            clearTimeout(wordSearchDebounceTimer);
+        }
+        wordSearchDebounceTimer = setTimeout(() => {
+            updateWordSearchVisuals();
+        }, 120);
+    });
+
+    drawChartMessage(
+        "#lineChart",
+        getWordChartWidth("#lineChart"),
+        getWordChartHeight("#lineChart"),
+        "Search a word or phrase to see mentions by episode."
+    );
+    drawChartMessage(
+        "#barChart",
+        getWordChartWidth("#barChart"),
+        getWordChartHeight("#barChart"),
+        "Search a word or phrase to see who says it most often."
+    );
+}
+
+function updateWordSearchVisuals() {
+    if (!globalData) {
+        return;
+    }
+
+    const query = currentSearchTerm.trim();
+    if (!query) {
+        drawChartMessage(
+            "#lineChart",
+            getWordChartWidth("#lineChart"),
+            getWordChartHeight("#lineChart"),
+            "Search a word or phrase to see mentions by episode."
+        );
+        drawChartMessage(
+            "#barChart",
+            getWordChartWidth("#barChart"),
+            getWordChartHeight("#barChart"),
+            "Search a word or phrase to see who says it most often."
+        );
+        return;
+    }
+
+    const selectedSeason = d3.select("#seasonSelect").property("value") || "all";
+    const scopedData = selectedSeason === "all"
+        ? globalData
+        : globalData.filter(d => d.season === +selectedSeason);
+
+    const episodeSeries = buildEpisodeMentionSeries(scopedData, query);
+    const speakerCounts = buildSpeakerMentionSeries(scopedData, query);
+
+    drawWordFrequencyLineChart(episodeSeries, query, selectedSeason);
+    drawWordSpeakerBarChart(speakerCounts, query, selectedSeason);
+}
+
+function buildEpisodeMentionSeries(data, query) {
+    const mentionsByEpisode = new Map();
+
+    data.forEach(d => {
+        const mentions = countQueryMentions(d.sentence, query);
+        if (!mentions) {
+            return;
+        }
+
+        const key = `${d.season}-${d.episode}`;
+        mentionsByEpisode.set(key, (mentionsByEpisode.get(key) || 0) + mentions);
+    });
+
+    const orderedEpisodes = Array.from(new Set(data.map(d => `${d.season}-${d.episode}`)))
+        .map(key => {
+            const [season, episode] = key.split("-").map(Number);
+            return { season, episode, key };
+        })
+        .sort((a, b) => (a.season - b.season) || (a.episode - b.episode));
+
+    return orderedEpisodes.map((d, index) => ({
+        ...d,
+        index,
+        label: `S${d.season}E${String(d.episode).padStart(2, "0")}`,
+        count: mentionsByEpisode.get(d.key) || 0
+    }));
+}
+
+function buildSpeakerMentionSeries(data, query) {
+    const speakerMentions = d3.rollups(
+        data,
+        rows => d3.sum(rows, row => countQueryMentions(row.sentence, query)),
+        d => d.character
+    );
+
+    return speakerMentions
+        .map(([character, count]) => ({ character, count }))
+        .filter(d => d.count > 0)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, WORD_TOP_SPEAKERS);
+}
+
+function drawWordFrequencyLineChart(series, query, selectedSeason) {
+    const svgWidth = getWordChartWidth("#lineChart");
+    const svgHeight = getWordChartHeight("#lineChart");
+    const svg = d3.select("#lineChart")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight);
+
+    svg.selectAll("*").remove();
+
+    if (!series.length) {
+        drawChartMessage("#lineChart", svgWidth, svgHeight, "No episode data available.");
+        return;
+    }
+
+    const totalMentions = d3.sum(series, d => d.count);
+    const firstMention = series.find(d => d.count > 0);
+
+    const margin = { top: 52, right: 22, bottom: 95, left: 72 };
+    const chartWidth = svgWidth - margin.left - margin.right;
+    const chartHeight = svgHeight - margin.top - margin.bottom;
+
+    const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear()
+        .domain([0, Math.max(0, series.length - 1)])
+        .range([0, chartWidth]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(series, d => d.count) || 1])
+        .nice()
+        .range([chartHeight, 0]);
+
+    const line = d3.line()
+        .x(d => x(d.index))
+        .y(d => y(d.count));
+
+    g.append("path")
+        .datum(series)
+        .attr("fill", "none")
+        .attr("stroke", "#1f77b4")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+    const tooltip = d3.select("#tooltip");
+
+    g.selectAll("circle")
+        .data(series)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.index))
+        .attr("cy", d => y(d.count))
+        .attr("r", d => d.count > 0 ? 3 : 2)
+        .attr("fill", d => d.count > 0 ? "#1f77b4" : "#98bdd8")
+        .on("mouseover", (event, d) => {
+            tooltip
+                .style("display", "block")
+                .html(`<strong>${d.label}</strong><br>Mentions: ${d.count}`);
+        })
+        .on("mousemove", event => {
+            tooltip
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
+
+    g.append("rect")
+    .attr("width", chartWidth)
+    .attr("height", chartHeight)
+    .style("fill", "none")
+    .style("pointer-events", "all")
+        .on("mousemove", function(event) {
+            const [mx] = d3.pointer(event);
+
+            const closest = series.reduce((a, b) => {
+                return Math.abs(x(a.index) - mx) <
+                    Math.abs(x(b.index) - mx) ? a : b;
+            });
+
+            const svgRect = svg.node().getBoundingClientRect();
+
+            const dotX = svgRect.left + window.scrollX + margin.left + x(closest.index);
+            const dotY = svgRect.top + window.scrollY + margin.top + y(closest.count);
+
+            tooltip
+            .style("display", "block")
+            .html(`
+                <strong>${closest.label}</strong><br>
+                Mentions: ${closest.count}
+            `);
+
+            const ttWidth = tooltip.node().offsetWidth;
+            const ttHeight = tooltip.node().offsetHeight;
+
+            tooltip
+                .style("left", `${dotX - ttWidth / 2}px`)
+                .style("top", `${dotY - ttHeight - 12}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
+
+    const tickStep = Math.max(1, Math.ceil(series.length / 18));
+    const tickValues = [];
+    for (let i = 0; i < series.length; i += tickStep) {
+        tickValues.push(i);
+    }
+    if (series.length > 1 && tickValues[tickValues.length - 1] !== series.length - 1) {
+        tickValues.push(series.length - 1);
+    }
+
+    g.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(
+            d3.axisBottom(x)
+                .tickValues(tickValues)
+                .tickFormat(index => series[index].label)
+        )
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-0.5em")
+        .attr("dy", "0.3em")
+        .attr("transform", "rotate(-45)");
+
+    g.append("g").call(d3.axisLeft(y));
+
+    g.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + 82)
+        .attr("text-anchor", "middle")
+        .style("font-size", "13px")
+        .text("Episode");
+
+    g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -chartHeight / 2)
+        .attr("y", -50)
+        .attr("text-anchor", "middle")
+        .style("font-size", "13px")
+        .text("Mentions");
+
+    const scopeLabel = selectedSeason === "all" ? "All Seasons" : `Season ${selectedSeason}`;
+    const firstMentionText = firstMention ? `First mention: ${firstMention.label}` : "First mention: none";
+
+    svg.append("text")
+        .attr("x", svgWidth / 2)
+        .attr("y", 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "600")
+        .text(`"${query}" Mentions by Episode (${scopeLabel})`);
+
+    svg.append("text")
+        .attr("x", svgWidth / 2)
+        .attr("y", 39)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("fill", "#555")
+        .text(`Total mentions: ${totalMentions} | ${firstMentionText}`);
+}
+
+function drawWordSpeakerBarChart(speakerCounts, query, selectedSeason) {
+    const svgWidth = getWordChartWidth("#barChart");
+    const svgHeight = getWordChartHeight("#barChart");
+    const svg = d3.select("#barChart")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight);
+
+    svg.selectAll("*").remove();
+
+    if (!speakerCounts.length) {
+        const scopeLabel = selectedSeason === "all" ? "all seasons" : `Season ${selectedSeason}`;
+        drawChartMessage(
+            "#barChart",
+            svgWidth,
+            svgHeight,
+            `No speakers found for "${query}" in ${scopeLabel}.`
+        );
+        return;
+    }
+
+    const margin = { top: 52, right: 24, bottom: 48, left: 180 };
+    const chartWidth = svgWidth - margin.left - margin.right;
+    const chartHeight = svgHeight - margin.top - margin.bottom;
+
+    const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(speakerCounts, d => d.count) || 0])
+        .nice()
+        .range([0, chartWidth]);
+
+    const y = d3.scaleBand()
+        .domain(speakerCounts.map(d => d.character))
+        .range([0, chartHeight])
+        .padding(0.18);
+
+    const tooltip = d3.select("#tooltip");
+
+    g.selectAll("rect")
+        .data(speakerCounts)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", d => y(d.character))
+        .attr("width", d => x(d.count))
+        .attr("height", y.bandwidth())
+        .attr("fill", "#4682b4")
+        .on("mouseover", (event, d) => {
+            tooltip
+                .style("display", "block")
+                .html(`<strong>${d.character}</strong><br>Mentions: ${d.count}`);
+        })
+        .on("mousemove", event => {
+            tooltip
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY + 10}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
+
+    g.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(x));
+
+    g.append("g")
+        .call(d3.axisLeft(y));
+
+    g.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + 38)
+        .attr("text-anchor", "middle")
+        .style("font-size", "13px")
+        .text("Mentions");
+
+    g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -chartHeight / 2)
+        .attr("y", -135)
+        .attr("text-anchor", "middle")
+        .style("font-size", "13px")
+        .text("Character");
+
+    const scopeLabel = selectedSeason === "all" ? "All Seasons" : `Season ${selectedSeason}`;
+    svg.append("text")
+        .attr("x", svgWidth / 2)
+        .attr("y", 22)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "600")
+        .text(`Top Speakers of "${query}" (${scopeLabel})`);
+}
+
+function getWordChartWidth(svgSelector) {
+    const svgNode = d3.select(svgSelector).node();
+    if (!svgNode) {
+        return WORD_CHART_WIDTH;
+    }
+
+    const parent = svgNode.closest(".chart-card") || svgNode.parentElement;
+    const measured = parent ? parent.getBoundingClientRect().width : svgNode.getBoundingClientRect().width;
+
+    if (!Number.isFinite(measured) || measured <= 0) {
+        return WORD_CHART_WIDTH;
+    }
+
+    return Math.max(WORD_CHART_MIN_WIDTH, Math.floor(measured - 1));
+}
+
+function getWordChartHeight(svgSelector) {
+    const svgNode = d3.select(svgSelector).node();
+    if (!svgNode) {
+        return WORD_CHART_DEFAULT_HEIGHT;
+    }
+
+    const parent = svgNode.closest(".chart-card") || svgNode.parentElement;
+    const measured = parent ? parent.getBoundingClientRect().height : svgNode.getBoundingClientRect().height;
+
+    if (!Number.isFinite(measured) || measured <= 0) {
+        return WORD_CHART_DEFAULT_HEIGHT;
+    }
+
+    return Math.max(WORD_CHART_MIN_HEIGHT, Math.floor(measured - 1));
+}
+
+function drawChartMessage(svgSelector, width, height, message) {
+    const svg = d3.select(svgSelector)
+        .attr("width", width)
+        .attr("height", height);
+
+    svg.selectAll("*").remove();
+
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .style("fill", "#555")
+        .text(message);
+}
+
+function countQueryMentions(sentence, query) {
+    if (!sentence || !query) {
+        return 0;
+    }
+
+    const escapedQuery = escapeRegExp(query.trim());
+    if (!escapedQuery) {
+        return 0;
+    }
+
+    const usesWordBoundaries = !/\s/.test(query.trim());
+    const pattern = usesWordBoundaries ? `\\b${escapedQuery}\\b` : escapedQuery;
+    const regex = new RegExp(pattern, "gi");
+    const matches = String(sentence).match(regex);
+    return matches ? matches.length : 0;
+}
+
+function escapeRegExp(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function drawActTimeline(filteredActData, topCharacterData, selectedSeason) {
