@@ -884,6 +884,42 @@ function drawWordFrequencyLineChart(series, query, selectedSeason) {
             tooltip.style("display", "none");
         });
 
+    g.append("rect")
+    .attr("width", chartWidth)
+    .attr("height", chartHeight)
+    .style("fill", "none")
+    .style("pointer-events", "all")
+        .on("mousemove", function(event) {
+            const [mx] = d3.pointer(event);
+
+            const closest = series.reduce((a, b) => {
+                return Math.abs(x(a.index) - mx) <
+                    Math.abs(x(b.index) - mx) ? a : b;
+            });
+
+            const svgRect = svg.node().getBoundingClientRect();
+
+            const dotX = svgRect.left + window.scrollX + margin.left + x(closest.index);
+            const dotY = svgRect.top + window.scrollY + margin.top + y(closest.count);
+
+            tooltip
+            .style("display", "block")
+            .html(`
+                <strong>${closest.label}</strong><br>
+                Mentions: ${closest.count}
+            `);
+
+            const ttWidth = tooltip.node().offsetWidth;
+            const ttHeight = tooltip.node().offsetHeight;
+
+            tooltip
+                .style("left", `${dotX - ttWidth / 2}px`)
+                .style("top", `${dotY - ttHeight - 12}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
+
     const tickStep = Math.max(1, Math.ceil(series.length / 18));
     const tickValues = [];
     for (let i = 0; i < series.length; i += tickStep) {
