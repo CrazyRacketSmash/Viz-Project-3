@@ -10,8 +10,8 @@ const WORD_CHART_DEFAULT_HEIGHT = 440;
 const WORD_TOP_SPEAKERS = 12;
 const WORD_CHART_MIN_WIDTH = 320;
 const WORD_CHART_MIN_HEIGHT = 280;
-const TIMELINE_TOP_N = 15;
-const MAIN_CHARACTER_COUNT = 18;
+const TIMELINE_TOP_N = 45;
+const MAIN_CHARACTER_COUNT = 45;
 const TOP_WORDS_N = 18;
 const WORD_CLOUD_N = 55;
 const TOP_PHRASES_N = 14;
@@ -226,18 +226,23 @@ async function renderCharacterProfile(character, characterData, topWords) {
 
     container.html('');
 
+    const hasProfile = profile !== null && profile !== undefined;
     const profileName = profileSection?.name || profile?.name || displayName;
-    const profileBio = profileSection?.bio || profileSection?.summary || profile?.bio || profile?.summary || "Profile details are stored in the character info folder.";
+    const profileBio = profileSection?.bio || profileSection?.summary || profile?.bio || profile?.summary || (hasProfile ? "Profile details available in the character info folder." : "Profile coming soon.");
     const profileImage = profileSection?.image || profile?.image || await findProfileImageUrl(character);
-    const profileSubtitle = profileSection?.subtitle || profileSection?.role || profileSection?.title || profile?.subtitle || profile?.role || profile?.title || "";
+    const profileSubtitle = profileSection?.subtitle || profileSection?.role || profileSection?.title || profile?.subtitle || profile?.role || profile?.title || (hasProfile ? "" : "Work in Progress");
     const profileFacts = buildProfileFacts(profileSection || profile);
     const profileTags = Array.isArray(profileSection?.tags) && profileSection.tags.length ? profileSection.tags : (Array.isArray(profile?.tags) && profile.tags.length ? profile.tags : topWords.map(d => d.word));
 
     const imgWrapper = container.append('div').attr('class', 'profile-img-wrapper');
     if (profileImage) {
         imgWrapper.append('img').attr('src', profileImage).attr('alt', profileName);
-    } else {
+    } else if (hasProfile) {
         imgWrapper.append('div').attr('class', 'placeholder-content').text('No image available');
+    } else {
+        const wip = imgWrapper.append('div').attr('class', 'placeholder-content wip-placeholder');
+        wip.append('div').text('📝');
+        wip.append('div').style('font-size', '0.8rem').style('margin-top', '0.25rem').text('Work in Progress');
     }
 
     container.append('div').attr('class', 'character-name').text(profileName);
@@ -695,6 +700,7 @@ function truncate(text, maxLength) {
 
 function initializeTimelineFilters() {
     const timelineSeasonSelect = d3.select("#timelineSeasonSelect");
+    const timelineRangeSelect = d3.select("#timelineRangeSelect");
     const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
 
     const seasons = Array.from(new Set(globalActData.map(d => d.season))).sort((a, b) => a - b);
@@ -714,11 +720,21 @@ function initializeTimelineFilters() {
         .attr("value", d => d)
         .text(d => `Season ${d}`);
 
-    updateTimelineEpisodeOptions("all");
+    updateTimelineEpisodeOptions("all", "full");
+    updateTimelineEpisodeDisabledState("all");
+    updateTimelineRangeDisabledState("all");
 
     timelineSeasonSelect.on("change", function () {
         const selectedTimelineSeason = this.value;
-        updateTimelineEpisodeOptions(selectedTimelineSeason);
+        updateTimelineEpisodeOptions(selectedTimelineSeason, timelineRangeSelect.property("value") || "full");
+        updateTimelineEpisodeDisabledState(selectedTimelineSeason);
+        updateTimelineRangeDisabledState(selectedTimelineSeason);
+        renderTimelineFromFilters();
+    });
+
+    timelineRangeSelect.on("change", function () {
+        const selectedTimelineSeason = timelineSeasonSelect.property("value") || "all";
+        updateTimelineEpisodeOptions(selectedTimelineSeason, this.value || "full");
         renderTimelineFromFilters();
     });
 
@@ -727,7 +743,19 @@ function initializeTimelineFilters() {
     });
 }
 
-function updateTimelineEpisodeOptions(selectedTimelineSeason) {
+function updateTimelineEpisodeDisabledState(selectedSeason) {
+    const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
+    const isAllSeasons = selectedSeason === "all";
+    timelineEpisodeSelect.property("disabled", isAllSeasons);
+}
+
+function updateTimelineRangeDisabledState(selectedSeason) {
+    const timelineRangeSelect = d3.select("#timelineRangeSelect");
+    const isAllSeasons = selectedSeason === "all";
+    timelineRangeSelect.property("disabled", isAllSeasons);
+}
+
+function updateTimelineEpisodeOptions(selectedTimelineSeason, selectedRange = "full") {
     const timelineEpisodeSelect = d3.select("#timelineEpisodeSelect");
 
     const sourceData = selectedTimelineSeason === "all"
@@ -735,6 +763,14 @@ function updateTimelineEpisodeOptions(selectedTimelineSeason) {
         : globalActData.filter(d => d.season === +selectedTimelineSeason);
 
     const episodes = Array.from(new Set(sourceData.map(d => d.episode))).sort((a, b) => a - b);
+    let filteredEpisodes = episodes;
+
+    if (selectedTimelineSeason !== "all" && selectedRange !== "full") {
+        const halfIndex = Math.ceil(episodes.length / 2);
+        filteredEpisodes = selectedRange === "first"
+            ? episodes.slice(0, halfIndex)
+            : episodes.slice(halfIndex);
+    }
 
     timelineEpisodeSelect.selectAll("option").remove();
     timelineEpisodeSelect
@@ -744,7 +780,7 @@ function updateTimelineEpisodeOptions(selectedTimelineSeason) {
 
     timelineEpisodeSelect
         .selectAll("option.timeline-episode-option")
-        .data(episodes)
+        .data(filteredEpisodes)
         .enter()
         .append("option")
         .attr("class", "timeline-episode-option")
@@ -760,12 +796,22 @@ function renderTimelineFromFilters() {
     }
 
     const timelineSeason = d3.select("#timelineSeasonSelect").property("value") || "all";
+    const timelineRange = d3.select("#timelineRangeSelect").property("value") || "full";
     const timelineEpisode = d3.select("#timelineEpisodeSelect").property("value") || "all";
 
     let filteredActData = globalActData;
 
     if (timelineSeason !== "all") {
         filteredActData = filteredActData.filter(d => d.season === +timelineSeason);
+
+        if (timelineRange !== "full") {
+            const seasonEpisodes = Array.from(new Set(filteredActData.map(d => d.episode))).sort((a, b) => a - b);
+            const halfIndex = Math.ceil(seasonEpisodes.length / 2);
+            const rangeEpisodes = timelineRange === "first"
+                ? new Set(seasonEpisodes.slice(0, halfIndex))
+                : new Set(seasonEpisodes.slice(halfIndex));
+            filteredActData = filteredActData.filter(d => rangeEpisodes.has(d.episode));
+        }
     }
 
     if (timelineEpisode !== "all") {
@@ -776,6 +822,15 @@ function renderTimelineFromFilters() {
 
     if (timelineSeason !== "all") {
         filteredLineData = filteredLineData.filter(d => d.season === +timelineSeason);
+
+        if (timelineRange !== "full") {
+            const seasonEpisodes = Array.from(new Set(filteredLineData.map(d => d.episode))).sort((a, b) => a - b);
+            const halfIndex = Math.ceil(seasonEpisodes.length / 2);
+            const rangeEpisodes = timelineRange === "first"
+                ? new Set(seasonEpisodes.slice(0, halfIndex))
+                : new Set(seasonEpisodes.slice(halfIndex));
+            filteredLineData = filteredLineData.filter(d => rangeEpisodes.has(d.episode));
+        }
     }
 
     if (timelineEpisode !== "all") {
@@ -819,7 +874,7 @@ function drawBarChart(data, filteredData) {
     const tooltip = d3.select("#tooltip");
     const width = 800;
     const height = 500;
-    const margin = { top: 20, right: 20, bottom: 50, left: 120 };
+    const margin = { top: 20, right: -200, bottom: 50, left: 120 };
 
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;

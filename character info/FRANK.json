@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Frank Lapidus",
+    "subtitle": "Pilot and pragmatist",
+    "bio": "Frank is the Ajira Airways pilot who becomes an important ally to the survivors.",
+    "facts": {
+      "Role": "Pilot",
+      "Focus": "Survival and escape",
+      "Known for": "Flying skills and practical thinking"
+    },
+    "tags": ["Flying", "Survival", "Pragmatism", "Alliance"]
+  }
+}
