@@ -1,0 +1,13 @@
+{
+  "character info": {
+    "name": "Sayid Jarrah",
+    "subtitle": "Soldier and communications expert",
+    "bio": "Sayid is calm under pressure, technically skilled, and often one of the group's most dependable problem-solvers.",
+    "facts": {
+      "Role": "Strategist",
+      "Focus": "Duty and redemption",
+      "Known for": "Interrogation, electronics, and tactical thinking"
+    },
+    "tags": ["Strategy", "Duty", "Intelligence", "Redemption"]
+  }
+}

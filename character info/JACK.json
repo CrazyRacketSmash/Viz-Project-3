@@ -1,0 +1,24 @@
+{
+  "name": "Jack Shephard",
+  "subtitle": "Surgeon and reluctant leader",
+  "bio": "Jack is a spinal surgeon who becomes one of the central leaders of the survivors on the island.",
+  "image": "img/character/jack.webp",
+  "character info": {
+    "name": "Jack Shephard",
+    "subtitle": "Surgeon and reluctant leader",
+    "bio": "Jack is a spinal surgeon who becomes one of the central leaders of the survivors on the island.",
+    "image": "img/character/jack.webp",
+    "facts": {
+      "Role": "Leader",
+      "Profession": "Surgeon",
+      "Focus": "Responsibility and sacrifice"
+    },
+    "tags": ["Leadership", "Medicine", "Survival", "Duty"]
+  },
+  "facts": {
+    "Role": "Leader",
+    "Profession": "Surgeon",
+    "Focus": "Responsibility and sacrifice"
+  },
+  "tags": ["Leadership", "Medicine", "Survival", "Duty"]
+}

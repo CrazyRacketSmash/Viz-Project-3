@@ -2,97 +2,180 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LOST Character Importance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOST Universe - Franchise Fandom</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Lost Character Analysis</h1>
-
-  <div id="about">
-    <p>
-      <strong>Lost</strong> aired on the American Broadcasting Company (ABC) from 2004 to 2010, running for 6 seasons and 121 episodes. The series follows survivors of a plane crash stranded on a mysterious island filled with strange and supernatural elements.
-    </p>
-    <p>
-      It features a diverse cast of characters, including Jack Shephard, Kate Austen, James "Sawyer" Ford, and John Locke, whose backstories are revealed throughout the show.
-    </p>
-    <p>
-      Blending mystery, drama, science fiction, and adventure, <strong>Lost</strong> became a cultural phenomenon known for its complex storytelling and unexpected twists.
-    </p>
-  </div>
-
-  <div class="controls">
-    <label for="seasonSelect">Season:</label>
-    <select id="seasonSelect">
-      <option value="all">All Seasons</option>
-      <option value="1">Season 1</option>
-      <option value="2">Season 2</option>
-      <option value="3">Season 3</option>
-      <option value="4">Season 4</option>
-      <option value="5">Season 5</option>
-      <option value="6">Season 6</option>
-    </select>
-  </div>
-
-  <svg id="chart" width="800" height="500"></svg>
-
-  <section id="textExplorer">
-    <h2>Character Language Explorer</h2>
-    <div class="controls text-controls">
-      <label for="characterSelect">Character:</label>
-      <select id="characterSelect"></select>
-
-      <label for="textSeasonSelect">Text Dataset:</label>
-      <select id="textSeasonSelect"></select>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">∿ LOST UNIVERSE</a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link active">Data Analysis</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <p id="textSummary"></p>
+  <!-- Hero Header -->
+  <header class="hero-header">
+    <div class="hero-content">
+      <h1 class="hero-title">LOST Data Universe</h1>
+      <p class="hero-subtitle">Explore character importance, linguistic patterns, and narrative threads through data visualization</p>
+    </div>
+  </header>
 
-    <div class="text-grid">
-      <div class="viz-card">
-        <h3>Word Cloud (Stop Words Removed)</h3>
-        <svg id="wordCloud" width="600" height="360"></svg>
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Character Importance Section -->
+    <section class="viz-section">
+      <div class="section-header">
+        <h2>Character Importance by Season</h2>
+        <p class="section-desc">Discover which characters drive the narrative in each season</p>
+      </div>
+      
+      <div class="controls">
+        <div class="control-group">
+          <label for="seasonSelect">Select Season:</label>
+          <select id="seasonSelect" class="select-input">
+            <option value="all">All Seasons</option>
+            <option value="1">Season 1</option>
+            <option value="2">Season 2</option>
+            <option value="3">Season 3</option>
+            <option value="4">Season 4</option>
+            <option value="5">Season 5</option>
+            <option value="6">Season 6</option>
+          </select>
+        </div>
       </div>
 
-      <div class="viz-card">
-        <h3>Top Words</h3>
-        <svg id="wordBars" width="600" height="360"></svg>
+      <div class="chart-container">
+        <svg id="chart" width="100%" height="500"></svg>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="viz-section">
+      <div class="section-header">
+        <h2>Timeline View</h2>
+        <p class="section-desc">Follow narrative progression and character appearances throughout each episode</p>
       </div>
 
-      <div class="viz-card">
-        <h3>Frequent Phrases</h3>
-        <svg id="phraseBars" width="600" height="360"></svg>
+      <div class="controls">
+        <div class="control-group">
+          <label for="timelineSeasonSelect">Season:</label>
+          <select id="timelineSeasonSelect" class="select-input"></select>
+        </div>
+        <div class="control-group">
+          <label for="timelineEpisodeSelect">Episode:</label>
+          <select id="timelineEpisodeSelect" class="select-input"></select>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <svg id="timeline" width="100%" height="520"></svg>
+      </div>
+    </section>
+
+    <!-- Character Language Explorer Section -->
+    <section id="textExplorer" class="viz-section">
+      <div class="section-header">
+        <h2>Character Language Explorer</h2>
+        <p class="section-desc">Analyze unique vocabulary and linguistic patterns in character dialogue</p>
+      </div>
+
+      <div class="explorer-header">
+        <div class="controls text-controls">
+          <div class="control-group">
+            <label for="characterSelect">Character:</label>
+            <select id="characterSelect" class="select-input"></select>
+          </div>
+          <div class="control-group">
+            <label for="textSeasonSelect">Season:</label>
+            <select id="textSeasonSelect" class="select-input"></select>
+          </div>
+        </div>
+        <p id="textSummary" class="explorer-summary"></p>
+      </div>
+
+      <div class="text-grid-container">
+        <div class="viz-card">
+          <h3>Top 18 Words</h3>
+          <svg id="wordBars" width="600" height="360"></svg>
+        </div>
+        <div class="viz-card character-profile-placeholder">
+          <h3>Character Profile</h3>
+          <div class="placeholder-content">Coming Soon</div>
+        </div>
+        <div class="viz-card">
+          <h3>Common Phrases</h3>
+          <svg id="phraseBars" width="600" height="360"></svg>
+        </div>
+        <div class="viz-card">
+          <h3>Word Cloud</h3>
+          <svg id="wordCloud" width="600" height="360"></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Word Frequency Search Section -->
+    <section id="level4Panel" class="viz-section">
+      <div class="section-header">
+        <h2>Word Frequency Search</h2>
+        <p class="section-desc">Track the usage of specific words or phrases across seasons and characters</p>
+      </div>
+
+      <div class="searchBox">
+        <input type="text" id="wordSearch" class="search-input" placeholder="Search word or phrase..." />
+      </div>
+
+      <div class="level4-charts">
+        <div class="chart-card">
+          <svg id="lineChart"></svg>
+        </div>
+        <div class="chart-card">
+          <svg id="barChart"></svg>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>About This Project</h4>
+        <p>A data-driven exploration of the LOST franchise through character analysis and linguistic patterns.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Data Sources</h4>
+        <ul>
+          <li>Episode Transcripts</li>
+          <li>Character Datasets</li>
+          <li>Season Information</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Data Analysis</a></li>
+          <li><a href="about.html">About LOST</a></li>
+        </ul>
       </div>
     </div>
-  </section>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Project 3: TV Time (LOST). This is a fan project and is not affiliated with ABC or the creators of LOST.</p>
+    </div>
+  </footer>
 
-  <div class="controls timeline-controls">
-    <label for="timelineSeasonSelect">Timeline Season:</label>
-    <select id="timelineSeasonSelect"></select>
-
-    <label for="timelineEpisodeSelect">Timeline Episode:</label>
-    <select id="timelineEpisodeSelect"></select>
-  </div>
-
-  <svg id="timeline" width="1000" height="520"></svg>
+  <!-- Tooltip -->
   <div id="tooltip" class="tooltip"></div>
 
-  <section id="level4Panel" class="level4-panel">
-    <h2>Word Searching</h2>
-    <div class="searchBox">
-      <input type="text" id="wordSearch" placeholder="Search word or phrase..." />
-    </div>
-
-    <div class="level4-charts">
-      <div class="chart-card">
-        <svg id="lineChart"></svg>
-      </div>
-      <div class="chart-card">
-        <svg id="barChart"></svg>
-      </div>
-    </div>
-  </section>
-
+  <!-- Scripts -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="script.js"></script>
 </body>
