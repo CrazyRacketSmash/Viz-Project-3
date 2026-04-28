@@ -1,0 +1,353 @@
+season,episode,character,sentence
+4,2,MAN 1,"Sorry, Ron. Drone's got nothing but seafood at five thousand meters below. You picking up anything with yours?"
+4,2,RON,Zip. Trying to get her a peek over this ridge as soon as I can. Sonar's picking up something now.
+4,2,MAN 1,"Hey, you wanna switch feeds?"
+4,2,RON,Roger that.
+4,2,RON,I'm headed on a bearing of about 137 from the coordinates we pulled off our guy's map. But don't hold your breath.
+4,2,MAN 1,Magnetometer's picking up a hell of a lot of anomalies around here.
+4,2,RON,Chests full of doubloons?
+4,2,MAN 1,"Keep dreaming, Ron. Let's swing round to the next grid and recalibrate."
+4,2,MAN 1,Are you getting this?
+4,2,RON,"What, what's up?"
+4,2,MAN 1,"It's... It's an airplane. Oh my god, it's Oceanic 815."
+4,2,NEWSCASTER,"This haunting footage comes to us from the Christiane I, a salvage vehicle in the Indian Ocean. For more than two months, it's been scouring the depths of the Sunda Trench off Bali, in search of the remains of sunken trading ships. Late last night, the Christiane deployed two remotely operated vehicles, or ROVs, that verified what the National Transportation Safety Board had long feared, that the commercial..."
+4,2,WOMAN 1,"How do you want your eggs, Dan? So what happened, they find that missing plane? Dan? Dan? Dan, why are you so upset?"
+4,2,DANIEL,I don't know.
+4,2,WOMAN 2,I can't find my vest!
+4,2,MAN 2,Check under your seat!
+4,2,WOMAN 2,I already did!
+4,2,PILOT,Get ready!
+4,2,MAN 2,"Here, just take mine!"
+4,2,PILOT,Everybody out now!
+4,2,MAN 2,"Hey, genius, go!"
+4,2,DANIEL,No!
+4,2,MAN 2,Go!
+4,2,DANIEL,No!
+4,2,DANIEL,Hey there. Are you Jack?
+4,2,JACK,"Yeah, I'm Jack. Who are you?"
+4,2,DANIEL,I'm Daniel Faraday. I'm here to rescue you.
+4,2,JACK,"Hey, Dan, the chopper, how many of you were on it?"
+4,2,DANIEL,"Er, four, including me."
+4,2,KATE,So what happened to the rest of them?
+4,2,DANIEL,"Yeah, yeah, I, er, I have no idea, I dunno how many were able to get out before it went down, I just, I jumped and I lost my, er, what do you call it, my pack, and my phone was in my pack, if I had my phone, I would just, er..."
+4,2,KATE,We have a phone.
+4,2,DANIEL,You have a phone.
+4,2,DANIEL,Thank you.
+4,2,MINKOWSKI,Minkowski.
+4,2,DANIEL,"Hey, George. It's Daniel."
+4,2,MINKOWSKI,"Dan, the chopper comm went dead, what the hell happened up there?"
+4,2,DANIEL,"Yeah, I dunno, George, there was an electrical storm, all the instruments, they... I think they went down. But listen, I made contact with some of the survivors, and we were just, er..."
+4,2,MINKOWSKI,"Dan, am I on speaker?"
+4,2,DANIEL,Would you give me just one sec?
+4,2,KATE,Don't worry. Naomi covered for us. They don't know what Locke did to her.
+4,2,JACK,You sure about that?
+4,2,DANIEL,"Okay, so the boat hasn't heard from anybody else yet, but, er, their GPS transponders, my team and I are all wearing these, the transponders will send the locations back to the ship, and then the ship will send all the locations back into the phones. Er, oh, there we are, there's my signal right there, and hopefully we'll get the signals for the rest of the team soon. Will you help me find 'em?"
+4,2,JACK,Absolutely.
+4,2,DANIEL,"Okay, thank you. Hey, where are the rest of your people?"
+4,2,KATE,Most of them are back at the beach.
+4,2,DANIEL,Most of them?
+4,2,HURLEY,Dude. What's wrong with you? You're gonna get struck by lightning.
+4,2,LOCKE,"The storm's about to pass, Hugo."
+4,2,HURLEY,"It's a friggin' monsoon, we gotta..."
+4,2,LOCKE,Let's go.
+4,2,SAWYER,Why are you going East? Thought you said the Barracks were due South.
+4,2,LOCKE,"Because, James, we have to make a little detour first."
+4,2,SAWYER,Detour to what?
+4,2,LOCKE,There's a cabin I have to go to.
+4,2,HURLEY,I thought the cabin was back that way.
+4,2,LOCKE,"What did you say, Hugo?"
+4,2,HURLEY,"I, er, thought you were talking about the airplane cabin."
+4,2,SAWYER,"Why are we wasting our time going to some shack, anyway?"
+4,2,LOCKE,Because we're supposed to.
+4,2,SAWYER,Right. Like you were supposed to throw a knife into that Naomi chick's back.
+4,2,LOCKE,Uh-huh.
+4,2,SAWYER,"You mind telling us who you're getting your orders from, Colonel Kurtz?"
+4,2,LOCKE,I got 'em from Walt.
+4,2,JULIET,Jack still isn't back. Anything?
+4,2,SAYID,No. But it's a big Island. The freighter could be approaching from the other side.
+4,2,JULIET,That's the spirit.
+4,2,SAYID,"Juliet, you lived amongst the Others. Why would Ben say the people coming here intend to do us harm?"
+4,2,JULIET,"Because he's a liar. And he's trying to scare us, that's what Ben does. Or, because the people coming here intend to do us harm. How many guns do you have left?"
+4,2,KATE,Hey. That from your chopper?
+4,2,DANIEL,"Er, yeah yeah yeah, that, er, they had to reduce the weight load when we started going down. I guess that's why they pushed me out."
+4,2,JACK,What's this for?
+4,2,DANIEL,"Erm, I'm not in charge of packing, so..."
+4,2,JACK,"You're not, huh?"
+4,2,DANIEL,"We should, er..."
+4,2,JACK,"Hey, Daniel, why did you bring the gun?"
+4,2,DANIEL,"Er, as a precaution."
+4,2,JACK,Precaution against what?
+4,2,DANIEL,"Er, okay, see, erm, rescuing you and your people. Can't really say it's our primary objective."
+4,2,JACK,Then what is?
+4,2,DANIEL,"It's Miles, it's Miles, come on!"
+4,2,SAWYER,What the hell do you mean you saw Walt? In a dream?
+4,2,LOCKE,"No dream, it was Walt. Only, taller."
+4,2,SAWYER,"Taller? What, like a giant? Okay, what exactly did Walt tell you?"
+4,2,LOCKE,"He said I had work to do. That I had to stop this woman, Naomi, from bringing the rest of her people here."
+4,2,SAWYER,"What, you didn't ask any follow-up questions?"
+4,2,LOCKE,"Ben had shot me and left me for dead. Walt saved my life, so I pretty much took him at his word."
+4,2,SAWYER,He shot you? Yet here you are fit as a fiddle tromping through the jungle.
+4,2,LOCKE,"The bullet went in one side, came out the other. I'd probably be dead if I still had a kidney there. Anything else?"
+4,2,DANIEL,"Down there. Hey, Miles! Miles!"
+4,2,KATE,He dead?
+4,2,MILES,"Back up, handsome."
+4,2,DANIEL,"Hey, whoa whoa whoa, Miles! Take it easy, it's okay! They're here to help us. It's okay, Miles, they're just trying to help."
+4,2,MILES,Hey! Back away from him! Hands where I can see 'em!
+4,2,JACK,"Kate, it's alright, it's okay."
+4,2,MILES,So you're Kate. You wanna tell me where Naomi is?
+4,2,KATE,What?
+4,2,MILES,"Naomi, the woman you killed. Where is she?"
+4,2,CAR RADIO,"...Oceanic 815, it can only be described as the worst case scenario. With the plane accounted for, and a salvage mission unlikely, authorities are confirming all three hundred and twenty-four passengers dead."
+4,2,MILES,Ms Gardner? I'm Miles Straume. We spoke on the phone earlier.
+4,2,GARDNER,"Oh oh oh, please come in."
+4,2,MILES,Which room is it?
+4,2,GARDNER,It's upstairs at the end of the hall.
+4,2,MILES,"I get paid in advance. Two hundred, cash only."
+4,2,GARDNER,You told me a hundred over...
+4,2,MILES,That was before my buddy at the police station told me your grandson was murdered. It's gonna be two hundred.
+4,2,GARDNER,Fine.
+4,2,MILES,"No matter what you hear, don't come up."
+4,2,MILES,"You're not doing your grandmother any good staying here, man. You're causing her a lot of pain. I wanna go downstairs and tell her you've gone, but the only way I'm gonna be able to do that is if you tell me where it is. So where is it?"
+4,2,MILES,You can go now.
+4,2,GARDNER,Did it work?
+4,2,MILES,"Yeah. He's at peace now. Here, you get a refund, half off. Wasn't as tricky as I thought."
+4,2,GARDNER,Thank you. Thank you.
+4,2,DANIEL,"Miles, Miles, hey, hey, hey, what you doing? What are you doing? These are good people."
+4,2,MILES,"Then why'd Naomi use the damn code? Yeah, you remember when she said tell my sister I love her, well she doesn't have a sister. That's what we're supposed to say if we get captured, have a gun to our heads. Like right now, Jack here would say tell my sister I love her, you get it?"
+4,2,JACK,We didn't kill your friend.
+4,2,MILES,Then take me to her body.
+4,2,DANIEL,"Miles, what about Charlotte, what about Frank?"
+4,2,MILES,Take me to Naomi!
+4,2,KATE,"Listen, Naomi was killed, but not by us, it was, it was a man by the name of John Locke. He's not with us anymore."
+4,2,MILES,"Kate, seriously, if I have to ask you again..."
+4,2,KATE,Even if I took you to her body you wouldn't know what happened...
+4,2,MILES,I'll know! Now take me to her body.
+4,2,BEN,"Alex. Alex, hey."
+4,2,ALEX,What?
+4,2,BEN,Something I need to tell you.
+4,2,KARL,"Keep your mouth shut, Mr. Linus."
+4,2,BEN,"Karl! Now, if you're gonna sleep with my daughter, I insist you call me Ben."
+4,2,SAWYER,"Easy, kid, guy's just trying to get in your head. Go take a walk or something."
+4,2,BEN,"Mind if I ask you a question, James?"
+4,2,SAWYER,"Yeah, I do."
+4,2,BEN,Why'd you leave Kate behind?
+4,2,SAWYER,"Wasting your time, Yoda."
+4,2,BEN,"I know it's not pleasant, but, let's face it, you really don't stand a chance now..."
+4,2,SAWYER,Chance of what?
+4,2,BEN,"James. Look at yourself. Yes, on this Island you're brave, daring, handsome, you're someone, but if you left with them, back in the real-world a low-life scam artist like you could never compete with a first class surgeon. I think Kate was really upset when you made your choice to come with us. Thank god she has Jack there to comfort-"
+4,2,LOCKE,James! Don't!
+4,2,SAWYER,Don't what! Anyone wanna tell me why we're keeping this guy alive?
+4,2,LOCKE,"We're keeping him alive because he's been on this Island a lot longer than any of us. Because he has information we need. And because apart from his mouth, he's completely harmless."
+4,2,SAWYER,His mouth put that hole in your gut?
+4,2,LOCKE,"Okay, James. Let's execute him, right here, right now, in front of his daughter."
+4,2,SAWYER,"It's only a matter of time before he gets us, Johnny, and I bet he's already figured out how he's gonna do it. So you walk him."
+4,2,KATE,What is he doing?
+4,2,DANIEL,"The light is strange out here, isn't it? It's kinda, like, it doesn't scatter quite right."
+4,2,KATE,"Dan, your name's Dan, right? Listen, Dan. I know that you don't want anybody to get hurt, right? So why don't you just put that away?"
+4,2,DANIEL,"Er, because, erm, Miles would kill me."
+4,2,KATE,We're just trying to help.
+4,2,JACK,"Kate, you're wasting your breath. Why don't we just let this play out and see what happens, okay?"
+4,2,MILES,They didn't kill her. Happened like they said it did.
+4,2,DANIEL,"It's Charlotte, only three kilometers from here."
+4,2,MILES,"Alright then, let's go get her."
+4,2,MILES,I said let's go.
+4,2,JACK,You need to put the guns down.
+4,2,MILES,What?
+4,2,JACK,Put the guns down.
+4,2,MILES,Now why would I do that?
+4,2,JACK,"Because our friends are out in the jungle right now holding a gun at your head, and his head. So I'm gonna forget about the misunderstanding. Just put the guns down."
+4,2,MILES,"Come on, how stupid do you think I-"
+4,2,JACK,"I dunno, Miles, how stupid are ya?"
+4,2,WOMAN,How many different languages do you have to read that in before you believe it's true?
+4,2,CHARLOTTE,How many different languages are there?
+4,2,WOMAN,He wants to know if we're lost.
+4,2,CHARLOTTE,Remind him the people in our line of work are terrible at keeping secrets. I know about the dig.
+4,2,WOMAN,He says the site is closed.
+4,2,CHARLOTTE,Then tell him to open it.
+4,2,WOMAN,Dinosaur?
+4,2,CHARLOTTE,Not by a few million years. It's an Ursus maritimus.
+4,2,WOMAN,"Wait, Ursus as in bear?"
+4,2,CHARLOTTE,As in polar bear.
+4,2,WOMAN,"Charlotte, we're in the desert. This is a hoax, right?"
+4,2,WOMAN,He wants to know what you're doing with the hammer.
+4,2,CHARLOTTE,Excavating.
+4,2,WOMAN,Is that a collar?
+4,2,CHARLOTTE,Hi.
+4,2,LOCKE,Hi yourself.
+4,2,JULIET,We were worried when you didn't get back so we went out to the cockpit and tracked you from there.
+4,2,JACK,"Thanks for that, for what it's worth."
+4,2,JULIET,Don't mention it.
+4,2,KATE,Someone could have told me that the cavalry were here.
+4,2,JACK,I gave you that... wink.
+4,2,SAYID,What are your names?
+4,2,DANIEL,"Er, I'm Daniel Faraday, and this is Miles..."
+4,2,MILES,Don't tell him my last name.
+4,2,DANIEL,I guess it's just Miles.
+4,2,SAYID,"What do you do for a living, Daniel?"
+4,2,DANIEL,"I'm a physicist. Well, I guess you could call me a physicist, I don't really like being pigeon-holed into one..."
+4,2,MILES,"Dan, I swear to God, you say one more word, I'm gonna break your fingers."
+4,2,SAYID,"And what do you do, Miles?"
+4,2,MILES,I collect soil samples.
+4,2,SAYID,"Oh, that's nice. Well, maybe you can help me. You say you're not here on a rescue mission, and the world at large believes us to be dead. But here we are alive and well, and you don't seem remotely surprised to see us."
+4,2,MILES,"Oh my God, you guys were on Oceanic Flight 815! Wow! That better?"
+4,2,CHARLOTTE,I can't believe you're alive. How many of you are there?
+4,2,HURLEY,Why do you wanna know?
+4,2,CHARLOTTE,Why wouldn't I wanna know?
+4,2,HURLEY,"Forty-eight of us survived the crash, that's not counting the tail-section. They're pretty much all dead now..."
+4,2,LOCKE,Hugo.
+4,2,CHARLOTTE,So you've all been living here this entire time. Is that your baby?
+4,2,CLAIRE,"Yeah, this is Aaron."
+4,2,CHARLOTTE,Did you have him here on the Island?
+4,2,CLAIRE,Mmhmm.
+4,2,CHARLOTTE,That's amazing.
+4,2,CHARLOTTE,"Well, I've about a million more questions I want to ask you, but they can wait until we get you back to the freighter. We all got one of these transponders, so if we just sit tight, they're gonna be here soon, okay?"
+4,2,LOCKE,"This team of yours, how many of you are there?"
+4,2,CHARLOTTE,"Four, including me."
+4,2,LOCKE,And what happened to your helicopter?
+4,2,CHARLOTTE,"I dunno, the pilot was trying to put it down."
+4,2,LOCKE,Where?
+4,2,CHARLOTTE,"I dunno. I had to jump, it was chaos. I'm lucky to be alive."
+4,2,LOCKE,"Get up, you're coming with us."
+4,2,CHARLOTTE,Wha- What? We need to stay where we are so they can find us.
+4,2,LOCKE,"See, there's your problem. We don't wanna be found."
+4,2,MILES,I wouldn't mess around with that if I were you.
+4,2,SAYID,It can't hurt to try and call someone else.
+4,2,MILES,"Oh, it can hurt."
+4,2,MILES,What'd you do?
+4,2,SAYID,I didn't do anything.
+4,2,SAYID,"Your friend, Charlotte, she's moving. And she's moving fast."
+4,2,JACK,She's running from something.
+4,2,SAYID,"According to this, she's right here."
+4,2,DANIEL,Charlotte! Charlotte!
+4,2,KATE,"Over there, over there."
+4,2,KATE,Vincent.
+4,2,JACK,Locke's got her.
+4,2,TV REPORTER,We wanna caution our viewers that the images they are about to see are graphic in nature. Viewer discretion is advised. Authorities have released dramatic footage of the sunken remains of Oceanic Flight 815. The National Transportation Safety Board has set up a hotline for family members of the Oceanic victims. The NTSB has begun the victim identification process.
+4,2,TV REPORTER,"We have confirmation that this is the pilot, Captain Seth Norris. In a statement, the NTSB said that quote..."
+4,2,TV REPORTER,...recovery of the bodies will be next to impossible. We can only hope that identification will provide closure to the families of the victims. Unquote.
+4,2,FEMALE OPERATOR,"National Transportation Safety Board, Oceanic hotline."
+4,2,FRANK,"Yeah, let me speak to your supervisor."
+4,2,FEMALE OPERATOR,"Yes, sir, are you a family member of the deceased?"
+4,2,FRANK,"No I'm not, but I got some information on the crash, may I please speak to your supervisor."
+4,2,FEMALE OPERATOR,"Sir, if you could just tell me..."
+4,2,FRANK,"Look, I'm staring at the television right now, you're broadcasting footage of the wreckage and saying that that's the pilot Seth Norris."
+4,2,FEMALE OPERATOR,"Yes, sir?"
+4,2,FRANK,"Well, that's not him."
+4,2,FEMALE OPERATOR,Please hold.
+4,2,MALE VOICE,Who am I speaking with?
+4,2,FRANK,"Doesn't matter who I am, you're showing footage of Seth Norris and that's not him. Listen, this guy married his high school sweetheart at nineteen, he always wore his wedding ring and I'm telling you there's no ring on that body."
+4,2,MALE VOICE,"Sir, it's likely the ring fell off."
+4,2,FRANK,"I'm telling you, that is not him."
+4,2,MALE VOICE,How exactly is it that you know all about Captain Norris?
+4,2,FRANK,Because I was supposed to be flying Oceanic 815 on that day.
+4,2,CHARLOTTE,That's them. That's somebody from my team.
+4,2,CHARLOTTE,What's wrong with you people? We're here because of you. I just almost died jumping out of a helicopter because you called us for help.
+4,2,HURLEY,Maybe we should go see who launched that flare.
+4,2,CLAIRE,"Yeah, I mean, they could be hurt, John."
+4,2,LOCKE,"She's lying. And whatever they came for it, isn't us. We keep moving forwards as planned."
+4,2,SAWYER,Sure! Who are we to argue with taller ghost Walt?
+4,2,CHARLOTTE,You know what? You people do whatever you want.
+4,2,LOCKE,I want you to come with us.
+4,2,CHARLOTTE,"I'm not asking for permission, and if you think you're gonna bloody stop me from getting to my-!"
+4,2,SAWYER,"What did you do, you son of a bitch."
+4,2,CHARLOTTE,Vest.
+4,2,LOCKE,What?
+4,2,CHARLOTTE,Vest. Vest.
+4,2,DANIEL,Is he alive?
+4,2,JACK,I've got a pulse.
+4,2,DANIEL,"Frank? Frank? Hey, hey. Frank?"
+4,2,DANIEL,You okay?
+4,2,MILES,What happened?
+4,2,FRANK,We got struck by lightning.
+4,2,DANIEL,"Frank, where's Charlotte?"
+4,2,FRANK,She bailed out just before we went down. I don't know where she is.
+4,2,MILES,Where's the chopper?
+4,2,FRANK,I saw a cow.
+4,2,MILES,"Hey, hey, Lapidus, where's the chopper? Where did it crash?"
+4,2,FRANK,"Crash? The hell kind of pilot do you think I am? I put her down safe and sound, right over there."
+4,2,NAOMI,So this is the team.
+4,2,MATTHEW,You familiarized yourself with their profiles?
+4,2,NAOMI,"Unfortunately, yes. With respect, these are the wrong people for a mission like this. None of them have field experience, military training."
+4,2,NAOMI,You can't just drop them in unprotected. It'll be a disaster.
+4,2,MATTHEW,"They're not unprotected, they have you."
+4,2,NAOMI,There's only so much I can do.
+4,2,MATTHEW,Your modesty is positively charming.
+4,2,NAOMI,"This is a high risk covert op in unstable territory. It's dodgy enough without having to babysit a headcase, ghost buster, anthropologist and a drunk."
+4,2,MATTHEW,"To be fair, he's also a pretty good pilot."
+4,2,NAOMI,It's madness. What if we find survivors from 815?
+4,2,MATTHEW,There were no survivors.
+4,2,NAOMI,"I know, but what if there are survivors?"
+4,2,MATTHEW,"There were no survivors of Oceanic 815. Don't ask questions, just do what you were hired for. Every member of this team was selected for a specific purpose. Everything relies on you getting them in, getting them out, and preventing anyone from getting killed. Think you can do that?"
+4,2,NAOMI,Sure. Why not?
+4,2,JACK,Well?
+4,2,SAYID,"There's some minor damage, but the mechanical systems are intact."
+4,2,JACK,So it'll fly then?
+4,2,SAYID,Absolutely.
+4,2,MILES,Can I have the phone now?
+4,2,JACK,"Tell you what, I'll give you the phone if you tell me what you people are doing here."
+4,2,MILES,I'll tell you what we're doing here if you give me the phone.
+4,2,JACK,Don't say anything about your sister.
+4,2,WOMAN,Hello?
+4,2,MILES,"Regina, it's Miles. I need to talk to Minkowski."
+4,2,REGINA,Minkowski can't come to the phone right now.
+4,2,MILES,"It's important, go get him."
+4,2,REGINA,"Miles, he can't come to the phone right now."
+4,2,MILES,"Alright, have him call me when he can."
+4,2,REGINA,I gotta go.
+4,2,MILES,"Whoa whoa whoa, what are you doing with her?"
+4,2,DANIEL,We're taking her with us.
+4,2,MILES,"What's the point? That's not Naomi, it's just meat."
+4,2,DANIEL,"Miles, we can't just leave her here."
+4,2,FRANK,"Miles is right. We burned up most of the damned fuel flying around that storm. We barely got enough to get back to the freighter, we're not carrying any unnecessary weight. I'll take her on the next run. I promise, Dan."
+4,2,JACK,"There's a blanket over there by my backpack, would you get it?"
+4,2,KATE,Yeah.
+4,2,FRANK,Look as bad as it feels?
+4,2,JULIET,How bad does it feel?
+4,2,FRANK,What's your name again?
+4,2,JULIET,Juliet.
+4,2,FRANK,Juliet. Juliet what?
+4,2,JULIET,Juliet Burke.
+4,2,FRANK,"Juliet Burke. You weren't on that plane, were you?"
+4,2,FRANK,Miles!
+4,2,MILES,Yeah?
+4,2,FRANK,"This is Juliet, and she was not on the plane."
+4,2,MILES,What? You sure?
+4,2,FRANK,You know how many times I studied that damn manifest? Believe me there's no Juliet Burke on that plane. She's a native.
+4,2,MILES,Really... where is he?!
+4,2,JACK,Back off!
+4,2,JULIET,Where's who?
+4,2,MILES,You wanna know why we're here? I'll tell you why we're here!
+4,2,MILES,We're here for Benjamin Linus.
+4,2,MILES,Now where is he?
+4,2,BEN,"James, listen to me! Please!"
+4,2,SAWYER,Keep your mouth shut!
+4,2,LOCKE,You okay?
+4,2,CHARLOTTE,"I feel like I've got a cinder block on my chest, but I'll survive."
+4,2,LOCKE,I'm sorry you got shot. I didn't intend for that to happen.
+4,2,CHARLOTTE,Really? Because it seemed like you were about to shoot me yourself.
+4,2,LOCKE,What good would you be to me dead?
+4,2,CHARLOTTE,I feel much more comfortable now. Thanks.
+4,2,SAWYER,I guess this is the part where I'm supposed to say I told you so.
+4,2,LOCKE,"James, I stand corrected."
+4,2,SAWYER,You want me to do it?
+4,2,LOCKE,"No, it's my mess, I'll clean it up."
+4,2,ALEX,"No, wait!"
+4,2,LOCKE,"Danielle, you should escort Alex away from here."
+4,2,ALEX,"No, no!"
+4,2,DANIELLE,"Let's go. Come on, Alex."
+4,2,KARL,"She's right, let's go."
+4,2,LOCKE,Anyone who doesn't want to see this should leave now.
+4,2,CLAIRE,"John, we should talk about this."
+4,2,LOCKE,"Claire, what if one of those bullets had hit you or the baby?"
+4,2,BEN,"John, listen. I have information that you need. I have answers."
+4,2,LOCKE,What is the Monster?
+4,2,BEN,What?
+4,2,LOCKE,"The black smoke, the Monster, what is it?"
+4,2,BEN,I don't know.
+4,2,LOCKE,"Then goodbye, Benjamin."
+4,2,BEN,"Her name is Charlotte Lewis! Charlotte Staples Lewis. Born July second, nineteen seventy-nine, Essex, England. Parents David and Jeanette. Eldest of three, all girls. She was raised in Bromsgrove. Did her undergraduate studies at Kent. Took her PhD in Cultural Anthropology at Oxford. She's here with two other team members and a pilot. Their names Daniel Faraday, Miles Straume, and Frank Lapidus."
+4,2,BEN,"Your instinct was right, John. These people are a threat, and if you shoot me you'll never know how great a threat they were. Because I know what they're doing here. I know what they want."
+4,2,SAWYER,What do they want?
+4,2,BEN,"Me, James, they want me."
+4,2,LOCKE,How do you know all this?
+4,2,BEN,Because I have a man on their boat.
